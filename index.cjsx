@@ -12,7 +12,8 @@ module.exports =
   description: '打开新窗口以游玩其他游戏'
   handleClick: ->
     newWindow = windowManager.createWindow
-        #Use config
+        # Use config
+        realClose: true
         x: config.get 'poi.window.x', 0
         y: config.get 'poi.window.y', 0
         width: 1080
