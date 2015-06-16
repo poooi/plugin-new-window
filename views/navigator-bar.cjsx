@@ -65,7 +65,7 @@ NavigatorBar = React.createClass
   render: ->
     <Grid>
       <Col xs={8}>
-        <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
+        <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyPress = {@enterPress} />
       </Col>
       <Col xs={4}>
         <ButtonGroup>
