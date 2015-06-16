@@ -12,7 +12,6 @@ getIcon = (status) ->
       <FontAwesome name='check' />
     when 1
       <FontAwesome name='spinner' spin />
-
 NavigatorBar = React.createClass
   getInitialState: ->
     # Status
@@ -23,6 +22,9 @@ NavigatorBar = React.createClass
     navigateUrl: 'http://www.dmm.com/netgame'
   handleTitleSet: (e) ->
     remote.getCurrentWindow().setTitle(webview.getTitle())
+  handleClose: (e) =>
+    console.log('I do not want to be closed')
+    return false;
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 70}px"
     $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 70}px"
@@ -42,11 +44,8 @@ NavigatorBar = React.createClass
       navigateStatus: -2
   handleNavigate: ->
     webview.src = @state.navigateUrl
-  enterPress: (e) =>
+  enterPress: (e) ->
     if e.keyCode == 13
-      e.preventDefault()
-      url=document.getElementById("geturl").value;
-      webview.src = url
       e.preventDefault()
   handleRefresh: ->
     webview.reload()
@@ -65,7 +64,7 @@ NavigatorBar = React.createClass
   render: ->
     <Grid>
       <Col xs={8}>
-        <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyPress = {@enterPress} />
+        <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
       </Col>
       <Col xs={4}>
         <ButtonGroup>
