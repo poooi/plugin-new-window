@@ -16,7 +16,10 @@ module.exports =
         realClose: true
         x: config.get 'poi.window.x', 0
         y: config.get 'poi.window.y', 0
-        width: 1080
-        height: 650
-      newWindow.loadUrl 'http://www.dmm.com/netgame'
+        width: 1000
+        height: 700
+      if process.env.DEBUG?
+        newWindow.openDevTools
+          detach: true
+    newWindow.loadUrl "file://#{__dirname}/index.html"
     newWindow.show()
