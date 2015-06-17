@@ -1,5 +1,5 @@
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
-{Grid, Col, Button, ButtonGroup, Input} = ReactBootstrap
+{Grid, Col, Button, ButtonGroup, Input, Modal, Alert} = ReactBootstrap
 webview = $('inner-page webview')
 innerpage = $('inner-page')
 getIcon = (status) ->
@@ -12,6 +12,19 @@ getIcon = (status) ->
       <FontAwesome name='check' />
     when 1
       <FontAwesome name='spinner' spin />
+confirmExit = false
+exitPlugin = ->
+  confirmExit = true
+  window.close()
+window.onbeforeunload = (e) ->
+  console.log("poi~~~~~~")
+  if confirmExit
+    return true
+  else
+    if(window.confirm('确认关闭插件？'))
+      return true
+    else
+      return false
 NavigatorBar = React.createClass
   getInitialState: ->
     # Status
