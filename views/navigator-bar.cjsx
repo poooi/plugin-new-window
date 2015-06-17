@@ -17,11 +17,10 @@ exitPlugin = ->
   confirmExit = true
   window.close()
 window.onbeforeunload = (e) ->
-  console.log("poi~~~~~~")
   if confirmExit
     return true
   else
-    if(window.confirm('确认关闭插件？'))
+    if window.confirm('确认关闭插件？')
       return true
     else
       return false
@@ -34,10 +33,13 @@ NavigatorBar = React.createClass
     navigateStatus: 1
     navigateUrl: 'http://www.dmm.com/netgame'
   handleTitleSet: (e) ->
-    remote.getCurrentWindow().setTitle(webview.getTitle())
-  handleClose: (e) =>
-    console.log('I do not want to be closed')
-    return false;
+    webview.insertCSS """
+      * {
+        font-family: "Ubuntu", "Helvetica Neue", "Helvetica", "Arial", "Heiti SC", "WenQuanYi Micro Hei", "Microsoft YaHei", sans-serif !important;
+      }
+    """
+  handleDomReady: (e) ->
+    remote.getCurrentWindow().setTitle webview.getTitle()
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 70}px"
     $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 70}px"
@@ -64,13 +66,15 @@ NavigatorBar = React.createClass
     webview.reload()
   componentDidMount: ->
     window.addEventListener 'resize', @handleResize
-    webview.addEventListener 'dom-ready', @handleTitleSet
+    webview.addEventListener 'page-title-set', @handleTitleSet
+    webview.addEventListener 'dom-ready', @handleDomReady
     webview.addEventListener 'did-start-loading', @handleStartLoading
     webview.addEventListener 'did-stop-loading', @handleStopLoading
     webview.addEventListener 'did-fail-load', @handleFailLoad
   componentWillUmount: ->
     window.removeEventListener 'resize', @handleResize
-    webview.removeEventListener 'dom-ready', @handleTitleSet
+    webview.removeEventListener 'page-title-set', @handleTitleSet
+    webview.removeEventListener 'dom-ready', @handleDomReady
     webview.removeEventListener 'did-start-loading', @handleStartLoading
     webview.removeEventListener 'did-stop-loading', @handleStopLoading
     webview.removeEventListener 'did-fail-load', @handleFailLoad
