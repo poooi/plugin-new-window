@@ -41,8 +41,8 @@ NavigatorBar = React.createClass
   handleDomReady: (e) ->
     remote.getCurrentWindow().setTitle webview.getTitle()
   handleResize: (e) ->
-    $('inner-page')?.style?.height = "#{window.innerHeight - 70}px"
-    $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 70}px"
+    $('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
+    $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
