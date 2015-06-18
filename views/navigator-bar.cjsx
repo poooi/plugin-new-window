@@ -31,6 +31,7 @@ NavigatorBar = React.createClass
     # 0: Finish
     # 1: Loading
     navigateStatus: 1
+    muted: false
     navigateUrl: 'http://www.dmm.com/netgame'
   handleTitleSet: (e) ->
     webview.insertCSS """
@@ -58,7 +59,15 @@ NavigatorBar = React.createClass
     @setState
       navigateStatus: -2
   handleNavigate: ->
+    if @state.navigateUrl.substr(0,7).toLowerCase()!='http://'
+      if @state.navigateUrl.substr(0,8).toLowerCase()!='https://'
+        @state.navigateUrl = "http://" + @state.navigateUrl
     webview.src = @state.navigateUrl
+  handleSetMuted: ->
+    muted = !@state.muted
+    if webview.setAudioMuted?
+      webview.setAudioMuted muted
+    @setState {muted}
   enterPress: (e) ->
     if e.keyCode == 13
       e.preventDefault()
@@ -87,6 +96,10 @@ NavigatorBar = React.createClass
         <ButtonGroup>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
+        </ButtonGroup>
+        <span>　</span>
+        <ButtonGroup>
+          <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'bell-slash-o' else 'bell-o'} /></Button>
         </ButtonGroup>
       </Col>
     </Grid>
