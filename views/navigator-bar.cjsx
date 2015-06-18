@@ -99,7 +99,7 @@ NavigatorBar = React.createClass
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
-          <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'bell-slash-o' else 'bell-o'} /></Button>
+          <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
         </ButtonGroup>
       </Col>
     </Grid>
