@@ -68,6 +68,8 @@ NavigatorBar = React.createClass
     if webview.setAudioMuted?
       webview.setAudioMuted muted
     @setState {muted}
+  handleDebug: ->
+    webview.openDevTools()
   enterPress: (e) ->
     if e.keyCode == 13
       e.preventDefault()
@@ -100,6 +102,10 @@ NavigatorBar = React.createClass
         <span>　</span>
         <ButtonGroup>
           <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
+        </ButtonGroup>
+        <span>　</span>
+        <ButtonGroup>
+          <Button bsSize='small' onClick={@handleDebug}><FontAwesome name='gears' /></Button>
         </ButtonGroup>
       </Col>
     </Grid>
