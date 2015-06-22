@@ -70,10 +70,7 @@ NavigatorBar = React.createClass
       webview.setAudioMuted muted
     @setState {muted}
   handleDebug: ->
-    if webview.isDevToolsOpened?
-      webview.closeDevTools()
-    else
-      webview.openDevTools()
+    webview.openDevTools()
   enterPress: (e) ->
     if e.keyCode == 13
       e.preventDefault()
