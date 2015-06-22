@@ -1,5 +1,5 @@
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
-{Grid, Col, Button, ButtonGroup, Input, Modal, Alert} = ReactBootstrap
+{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, DropdownButton, MenuItem} = ReactBootstrap
 webview = $('inner-page webview')
 innerpage = $('inner-page')
 getIcon = (status) ->
@@ -51,6 +51,7 @@ NavigatorBar = React.createClass
   handleStartLoading: (e) ->
     @setState
       navigateStatus: 1
+      navigateUrl: webview.getUrl()
   handleStopLoading: ->
     @setState
       navigateStatus: 0
@@ -78,6 +79,15 @@ NavigatorBar = React.createClass
       e.preventDefault()
   handleRefresh: ->
     webview.reload()
+  onSelectLinkDMM: ->
+    webview.src = 'http://www.dmm.com/netgame/'
+    #@handleNavigate
+  onSelectLinkDMMR18: ->
+    webview.src = 'http://www.dmm.co.jp/netgame/'
+    #@handleNavigate
+  onSelectLinkWiki: ->
+    webview.src = 'http://wikiwiki.jp/kancolle/'
+    #@handleNavigate
   componentDidMount: ->
     window.addEventListener 'resize', @handleResize
     webview.addEventListener 'page-title-set', @handleTitleSet
@@ -109,6 +119,14 @@ NavigatorBar = React.createClass
         <span>　</span>
         <ButtonGroup>
           <Button bsSize='small' onClick={@handleDebug}><FontAwesome name='gears' /></Button>
+        </ButtonGroup>
+        <span>　</span>
+        <ButtonGroup>
+          <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
+            <MenuItem onClick={@onSelectLinkDMM}>DMM netgame</MenuItem>
+            <MenuItem onClick={@onSelectLinkDMMR18}>DMM netgame (R18)</MenuItem>
+            <MenuItem onClick={@onSelectLinkWiki}>kancolle Wiki</MenuItem>
+          </DropdownButton>
         </ButtonGroup>
       </Col>
     </Grid>
