@@ -83,7 +83,7 @@ NavigatorBar = React.createClass
     webview.src = 'http://www.dmm.com/netgame/'
     #@handleNavigate
   onSelectLinkDMMR18: ->
-    webview.src = 'http://www.dmm.co.jp/netgame/'
+    webview.src = 'http://www.dmm.com/service/-/exchange/=/url=Sg9VTQFXDFcXAlBVVhlLGBMEWF1ZVwMW'
     #@handleNavigate
   onSelectLinkWiki: ->
     webview.src = 'http://wikiwiki.jp/kancolle/'
@@ -125,7 +125,7 @@ NavigatorBar = React.createClass
           <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
             <MenuItem onClick={@onSelectLinkDMM}>DMM netgame</MenuItem>
             <MenuItem onClick={@onSelectLinkDMMR18}>DMM netgame (R18)</MenuItem>
-            <MenuItem onClick={@onSelectLinkWiki}>kancolle Wiki</MenuItem>
+            <MenuItem onClick={@onSelectLinkWiki}>Kancolle Wiki</MenuItem>
           </DropdownButton>
         </ButtonGroup>
       </Col>
