@@ -5,7 +5,7 @@ windowManager = remote.require './lib/window'
 module.exports =
   name: 'New-Window'
   priority: 100
-  displayName: [<FontAwesome name='sitemap' key={0} />, ' 一心二用']
+  displayName: <span><FontAwesome name='sitemap' key={0} /> 一心二用</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
   version: '1.0.0'
