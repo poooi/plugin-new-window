@@ -69,6 +69,15 @@ NavigatorBar = React.createClass
     if webview.setAudioMuted?
       webview.setAudioMuted muted
     @setState {muted}
+  handleJustify: ->
+    webview.executeJavaScript """
+      var iframe = document.querySelector('#game_frame').contentWindow.document;
+      window.scrollTo(0, 0);
+      var x = document.querySelector('#game_frame').getBoundingClientRect().left + iframe.querySelector('embed').getBoundingClientRect().left;
+      var y = document.querySelector('#game_frame').getBoundingClientRect().top + iframe.querySelector('embed').getBoundingClientRect().top;
+      window.scrollTo(x, y);
+      document.documentElement.style.overflow = 'hidden';
+    """
   handleDebug: ->
     webview.openDevTools()
   enterPress: (e) ->
@@ -101,10 +110,10 @@ NavigatorBar = React.createClass
     webview.removeEventListener 'did-fail-load', @handleFailLoad
   render: ->
     <Grid>
-      <Col xs={8}>
+      <Col xs={7}>
         <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
       </Col>
-      <Col xs={4}>
+      <Col xs={5}>
         <ButtonGroup>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
@@ -112,6 +121,7 @@ NavigatorBar = React.createClass
         <span>　</span>
         <ButtonGroup>
           <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
+          <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
