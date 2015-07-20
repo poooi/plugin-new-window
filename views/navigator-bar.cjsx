@@ -1,5 +1,6 @@
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
-{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, DropdownButton, MenuItem} = ReactBootstrap
+{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row} = ReactBootstrap
+remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')
 getIcon = (status) ->
@@ -33,6 +34,8 @@ NavigatorBar = React.createClass
     navigateStatus: 1
     muted: false
     navigateUrl: 'http://www.dmm.com/netgame'
+    width: window.innerWidth
+    height: window.innerHeight - 50
   handleTitleSet: (e) ->
     webview.insertCSS """
       * {
@@ -44,10 +47,31 @@ NavigatorBar = React.createClass
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
     $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
+  handleSetRes: (e) ->
+    nowWindow = remote.getCurrentWindow()
+    bound = nowWindow.getBounds()
+    {x, y} = bound
+    borderX = bound.width - window.innerWidth
+    borderY = bound.height - window.innerHeight
+    newWidth = parseInt(@state.width)
+    newHeight = parseInt(@state.height)
+    nowWindow.setBounds
+      x: x
+      y: y
+      width: parseInt(newWidth + borderX)
+      height: parseInt(newHeight + borderY + 50)
+    #$('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
+    #$('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
       navigateStatus: -1
+  handleSetWidth: (e) ->
+    @setState
+      width: e.target.value
+  handleSetHeight: (e) ->
+    @setState
+      height: e.target.value
   handleStartLoading: (e) ->
     @setState
       navigateStatus: 1
@@ -122,6 +146,29 @@ NavigatorBar = React.createClass
         <ButtonGroup>
           <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
+          <OverlayTrigger trigger='click' rootClose={true} placement='top' overlay={
+            <Popover title='分辨率设置'>
+              <Input  wrapperClassName='wrapper'>
+                <Row>
+                  <Col xs={4}>
+                    <Input type='text' bsSize='small' value={@state.width} onChange={@handleSetWidth}/>
+                  </Col>
+                  <Col xs={4}>
+                    <Input type='text' bsSize='small' value={@state.height} onChange={@handleSetHeight}/>
+                  </Col>
+                  <Col xs={1}>
+                    <Button bsSize='small' onClick={@handleSetRes}>
+                      <FontAwesome name='check' />
+                    </Button>
+                  </Col>
+                </Row>
+              </Input>
+            </Popover>
+            }>
+            <Button id='res-btn' bsStyle='default' bsSize='small' html='true' onClick={@props.switchShow}>
+              <FontAwesome name='arrows'/>
+            </Button>
+          </OverlayTrigger>
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
