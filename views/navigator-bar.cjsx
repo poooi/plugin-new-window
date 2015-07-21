@@ -60,8 +60,6 @@ NavigatorBar = React.createClass
       y: y
       width: parseInt(newWidth + borderX)
       height: parseInt(newHeight + borderY + 50)
-    #$('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
-    #$('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
