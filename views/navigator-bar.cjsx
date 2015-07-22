@@ -1,5 +1,5 @@
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
-{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row} = ReactBootstrap
+{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip} = ReactBootstrap
 remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')
@@ -60,6 +60,8 @@ NavigatorBar = React.createClass
       y: y
       width: parseInt(newWidth + borderX)
       height: parseInt(newHeight + borderY + 50)
+    #$('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
+    #$('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
@@ -142,8 +144,12 @@ NavigatorBar = React.createClass
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
-          <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
-          <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
+          <OverlayTrigger placement='top' overlay={<Tooltip>音量开关</Tooltip>}>
+            <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
+          </OverlayTrigger>
+          <OverlayTrigger placement='top' overlay={<Tooltip>自动适配页面</Tooltip>}>
+            <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
+          </OverlayTrigger>
           <OverlayTrigger trigger='click' rootClose={true} placement='top' overlay={
             <Popover title='分辨率设置'>
               <Input  wrapperClassName='wrapper'>
@@ -169,17 +175,17 @@ NavigatorBar = React.createClass
           </OverlayTrigger>
         </ButtonGroup>
         <span>　</span>
-        <ButtonGroup>
+        <OverlayTrigger placement='top' overlay={<Tooltip>开发人员工具</Tooltip>}>
           <Button bsSize='small' onClick={@handleDebug}><FontAwesome name='gears' /></Button>
-        </ButtonGroup>
+        </OverlayTrigger>
         <span>　</span>
-        <ButtonGroup>
+        <OverlayTrigger placement='top' overlay={<Tooltip>快捷链接</Tooltip>}>
           <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
             <MenuItem onClick={@onSelectLinkDMM}>DMM netgame</MenuItem>
             <MenuItem onClick={@onSelectLinkDMMR18}>DMM netgame (R18)</MenuItem>
             <MenuItem onClick={@onSelectLinkWiki}>Kancolle Wiki</MenuItem>
           </DropdownButton>
-        </ButtonGroup>
+        </OverlayTrigger>
       </Col>
     </Grid>
 module.exports = NavigatorBar
