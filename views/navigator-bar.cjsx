@@ -144,7 +144,7 @@ NavigatorBar = React.createClass
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
-          <OverlayTrigger placement='top' overlay={<Tooltip>音量开关</Tooltip>}>
+          <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then '关闭声音' else '打开声音'}</Tooltip>}>
             <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           </OverlayTrigger>
           <OverlayTrigger placement='top' overlay={<Tooltip>自动适配页面</Tooltip>}>
@@ -169,9 +169,11 @@ NavigatorBar = React.createClass
               </Input>
             </Popover>
             }>
-            <Button id='res-btn' bsStyle='default' bsSize='small' html='true' onClick={@props.switchShow}>
-              <FontAwesome name='arrows'/>
-            </Button>
+            <OverlayTrigger placement='top' overlay={<Tooltip>分辨率设置</Tooltip>}>
+              <Button id='res-btn' bsStyle='default' bsSize='small' html='true' onClick={@props.switchShow}>
+                <FontAwesome name='arrows'/>
+              </Button>
+            </OverlayTrigger>
           </OverlayTrigger>
         </ButtonGroup>
         <span>　</span>
