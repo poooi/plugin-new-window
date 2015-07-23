@@ -60,8 +60,32 @@ NavigatorBar = React.createClass
       y: y
       width: parseInt(newWidth + borderX)
       height: parseInt(newHeight + borderY + 50)
-    #$('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
-    #$('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
+  handleSetRes800: (e) ->
+    nowWindow = remote.getCurrentWindow()
+    bound = nowWindow.getBounds()
+    {x, y} = bound
+    borderX = bound.width - window.innerWidth
+    borderY = bound.height - window.innerHeight
+    newWidth = 800
+    newHeight = 480
+    nowWindow.setBounds
+      x: x
+      y: y
+      width: parseInt(newWidth + borderX)
+      height: parseInt(newHeight + borderY + 50)
+  handleSetRes960: (e) ->
+    nowWindow = remote.getCurrentWindow()
+    bound = nowWindow.getBounds()
+    {x, y} = bound
+    borderX = bound.width - window.innerWidth
+    borderY = bound.height - window.innerHeight
+    newWidth = 960
+    newHeight = 640
+    nowWindow.setBounds
+      x: x
+      y: y
+      width: parseInt(newWidth + borderX)
+      height: parseInt(newHeight + borderY + 50)
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
@@ -165,6 +189,12 @@ NavigatorBar = React.createClass
                       <FontAwesome name='check' />
                     </Button>
                   </Col>
+                </Row>
+                <Row>
+                  <div style={display: "flex", flexDirection: "row", marginTop: '10px'}>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes800}>800*480</Button>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes960}>960*640</Button>
+                  </div>
                 </Row>
               </Input>
             </Popover>
