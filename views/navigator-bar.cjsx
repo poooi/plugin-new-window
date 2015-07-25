@@ -112,6 +112,12 @@ NavigatorBar = React.createClass
       if @state.navigateUrl.substr(0,8).toLowerCase()!='https://'
         @state.navigateUrl = "http://" + @state.navigateUrl
     webview.src = @state.navigateUrl
+  handleBack: ->
+    if webview.canGoBack()
+      webview.goBack()
+  handleForward: ->
+    if webview.canGoForward()
+      webview.goForward()
   handleSetMuted: ->
     muted = !@state.muted
     if webview.setAudioMuted?
@@ -158,11 +164,13 @@ NavigatorBar = React.createClass
     webview.removeEventListener 'did-fail-load', @handleFailLoad
   render: ->
     <Grid>
-      <Col xs={7}>
+      <Col xs={5}>
         <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
       </Col>
-      <Col xs={5}>
+      <Col xs={7}>
         <ButtonGroup>
+          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='arrow-left' /></Button>
+          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='arrow-right' /></Button>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
