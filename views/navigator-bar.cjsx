@@ -127,12 +127,16 @@ NavigatorBar = React.createClass
     webview.executeJavaScript """
       var iframe = document.querySelector('#game_frame').contentWindow.document;
       window.scrollTo(0, 0);
+      var x = document.querySelector('#game_frame').getBoundingClientRect().left;
+      var y = document.querySelector('#game_frame').getBoundingClientRect().top;
+      window.scrollTo(x, y);
+      document.documentElement.style.overflow = 'hidden';
       var x1 = iframe.querySelector('embed').getBoundingClientRect().left;
       var y1 = iframe.querySelector('embed').getBoundingClientRect().top;
+      window.scrollTo(0, 0);
       var x = document.querySelector('#game_frame').getBoundingClientRect().left + x1;
       var y = document.querySelector('#game_frame').getBoundingClientRect().top + y1;
       window.scrollTo(x, y);
-      document.documentElement.style.overflow = 'hidden';
     """
   handleDebug: ->
     webview.openDevTools()
