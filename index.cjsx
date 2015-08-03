@@ -8,7 +8,7 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> 一心二用</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.2.0'
+  version: '1.3.0'
   description: '打开新窗口以游玩其他游戏'
   handleClick: ->
     newWindow = windowManager.createWindow

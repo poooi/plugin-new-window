@@ -86,6 +86,19 @@ NavigatorBar = React.createClass
       y: y
       width: parseInt(newWidth + borderX)
       height: parseInt(newHeight + borderY + 50)
+  handleSetRes960580: (e) ->
+    nowWindow = remote.getCurrentWindow()
+    bound = nowWindow.getBounds()
+    {x, y} = bound
+    borderX = bound.width - window.innerWidth
+    borderY = bound.height - window.innerHeight
+    newWidth = 960
+    newHeight = 580
+    nowWindow.setBounds
+      x: x
+      y: y
+      width: parseInt(newWidth + borderX)
+      height: parseInt(newHeight + borderY + 50)
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
@@ -127,13 +140,17 @@ NavigatorBar = React.createClass
     webview.executeJavaScript """
       var iframe = document.querySelector('#game_frame').contentWindow.document;
       window.scrollTo(0, 0);
-      var x = document.querySelector('#game_frame').getBoundingClientRect().left;
-      var y = document.querySelector('#game_frame').getBoundingClientRect().top;
-      window.scrollTo(x, y);
       document.documentElement.style.overflow = 'hidden';
-      var x1 = iframe.querySelector('embed').getBoundingClientRect().left;
-      var y1 = iframe.querySelector('embed').getBoundingClientRect().top;
-      window.scrollTo(0, 0);
+      var x1 = 0;
+      var y1 = 0;
+      if (iframe.querySelector('embed')!=null) {
+        x1 = iframe.querySelector('embed').getBoundingClientRect().left;
+        y1 = iframe.querySelector('embed').getBoundingClientRect().top;
+      } else if (iframe.querySelector('#aigis')!=null) {
+        var iframe1 = iframe.querySelector('#aigis').contentWindow.document;
+        x1 = iframe1.querySelector('canvas').getBoundingClientRect().left;
+        y1 = iframe1.querySelector('canvas').getBoundingClientRect().top;
+      }
       var x = document.querySelector('#game_frame').getBoundingClientRect().left + x1;
       var y = document.querySelector('#game_frame').getBoundingClientRect().top + y1;
       window.scrollTo(x, y);
@@ -207,6 +224,7 @@ NavigatorBar = React.createClass
                 <Row>
                   <div style={display: "flex", flexDirection: "row", marginTop: '10px'}>
                     <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes800}>800*480</Button>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes960580}>960*580</Button>
                     <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes960}>960*640</Button>
                   </div>
                 </Row>
