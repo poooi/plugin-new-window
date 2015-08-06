@@ -18,6 +18,9 @@ window.FontAwesome = require 'react-fontawesome'
 # Node modules
 window.config = remote.require './lib/config'
 
+# language setting
+window.language = config.get 'poi.language', 'zh-CN'
+
 # Custom theme
 window.theme = config.get 'poi.theme', '__default__'
 if theme == '__default__'

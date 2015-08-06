@@ -4,5 +4,7 @@
   "Auto adjust": "画面表示の調整",
   "Change resolution": "解像度調整",
   "Developer Tools": "デベロッパーツール",
-  "Links": "リンクス"
+  "Links": "リンクス",
+  "Open a new browser window": "新たな内蔵ブラウザウインドーを開く",
+  "Build-in browser": "内蔵ブラウザ"
 }

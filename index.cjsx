@@ -1,15 +1,28 @@
+i18n = require './node-modules/i18n'
+path = require 'path-extra'
+{__} = i18n
 {React, ReactBootstrap, FontAwesome} = window
 remote = require 'remote'
 windowManager = remote.require './lib/window'
 
+i18n.configure({
+    locales:['en-US', 'ja-JP', 'zh-CN'],
+    defaultLocale: 'zh-CN',
+    directory: path.join(__dirname, "i18n"),
+    updateFiles: false,
+    indent: "\t",
+    extension: '.json'
+})
+i18n.setLocale(window.language)
+
 module.exports =
   name: 'New-Window'
   priority: 100
-  displayName: <span><FontAwesome name='sitemap' key={0} /> 一心二用</span>
+  displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Build-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
   version: '1.3.0'
-  description: '打开新窗口以游玩其他游戏'
+  description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
         # Use config

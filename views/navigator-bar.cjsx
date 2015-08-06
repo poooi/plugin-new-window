@@ -1,18 +1,22 @@
-i18n = require 'i18n'
+i18n = require '../node-modules/i18n'
 path = require 'path-extra'
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
 {Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip} = ReactBootstrap
+{__} = i18n
 remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')
+
 i18n.configure({
     locales:['en-US', 'ja-JP', 'zh-CN'],
     defaultLocale: 'zh-CN',
-    directory: path.join(__dirname, "i18n"),
+    directory: path.join(__dirname, '..', "i18n"),
     updateFiles: false,
     indent: "\t",
     extension: '.json'
 })
+i18n.setLocale(window.language)
+
 getIcon = (status) ->
   switch status
     when -2
@@ -31,7 +35,7 @@ window.onbeforeunload = (e) ->
   if confirmExit
     return true
   else
-    if window.confirm('确认关闭插件？')
+    if window.confirm(__ "Confirm?")
       return true
     else
       return false
@@ -209,14 +213,14 @@ NavigatorBar = React.createClass
         </ButtonGroup>
         <span>　</span>
         <ButtonGroup>
-          <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then i18n.__('Volume off') else i18n.__('Volume on')}</Tooltip>}>
+          <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then __('Volume off') else __('Volume on')}</Tooltip>}>
             <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           </OverlayTrigger>
-          <OverlayTrigger placement='top' overlay={<Tooltip>{i18n.__("Auto adjust")}</Tooltip>}>
+          <OverlayTrigger placement='top' overlay={<Tooltip>{__("Auto adjust")}</Tooltip>}>
             <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
           </OverlayTrigger>
           <OverlayTrigger trigger='click' rootClose={true} placement='top' overlay={
-            <Popover title={i18n.__("Change resolution")}>
+            <Popover title={__("Change resolution")}>
               <Input  wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={4}>
@@ -241,7 +245,7 @@ NavigatorBar = React.createClass
               </Input>
             </Popover>
             }>
-            <OverlayTrigger placement='top' overlay={<Tooltip>{i18n.__("Change resolution")}</Tooltip>}>
+            <OverlayTrigger placement='top' overlay={<Tooltip>{__("Change resolution")}</Tooltip>}>
               <Button id='res-btn' bsStyle='default' bsSize='small' html='true' onClick={@props.switchShow}>
                 <FontAwesome name='arrows'/>
               </Button>
@@ -249,11 +253,11 @@ NavigatorBar = React.createClass
           </OverlayTrigger>
         </ButtonGroup>
         <span>　</span>
-        <OverlayTrigger placement='top' overlay={<Tooltip>{i18n.__("Developer Tools")}</Tooltip>}>
+        <OverlayTrigger placement='top' overlay={<Tooltip>{__("Developer Tools")}</Tooltip>}>
           <Button bsSize='small' onClick={@handleDebug}><FontAwesome name='gears' /></Button>
         </OverlayTrigger>
         <span>　</span>
-        <OverlayTrigger placement='top' overlay={<Tooltip>{i18n.__("Links")}</Tooltip>}>
+        <OverlayTrigger placement='top' overlay={<Tooltip>{__("Links")}</Tooltip>}>
           <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
             <MenuItem onClick={@onSelectLinkDMM}>DMM netgame</MenuItem>
             <MenuItem onClick={@onSelectLinkDMMR18}>DMM netgame (R18)</MenuItem>
