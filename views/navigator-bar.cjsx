@@ -8,8 +8,8 @@ webview = $('inner-page webview')
 innerpage = $('inner-page')
 
 i18n.configure({
-    locales:['en-US', 'ja-JP', 'zh-CN'],
-    defaultLocale: 'zh-CN',
+    locales:['en_US', 'ja_JP', 'zh_CN'],
+    defaultLocale: 'zh_CN',
     directory: path.join(__dirname, '..', "i18n"),
     updateFiles: false,
     indent: "\t",
