@@ -18,7 +18,7 @@ i18n.setLocale(window.language)
 module.exports =
   name: 'New-Window'
   priority: 100
-  displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Build-in browser'}</span>
+  displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
   version: '1.3.0'
