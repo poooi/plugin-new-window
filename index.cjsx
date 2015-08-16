@@ -31,7 +31,7 @@ module.exports =
         y: config.get 'poi.window.y', 0
         width: 1100
         height: 700
-      if true#process.env.DEBUG?
+      if process.env.DEBUG?
         newWindow.openDevTools
           detach: true
     newWindow.loadUrl "file://#{__dirname}/index.html"
