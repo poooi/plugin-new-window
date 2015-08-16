@@ -1,5 +1,6 @@
 i18n = require '../node-modules/i18n'
 path = require 'path-extra'
+fs = require 'fs-extra'
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
 {Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip} = ReactBootstrap
 {__} = i18n
@@ -16,6 +17,9 @@ i18n.configure({
     extension: '.json'
 })
 i18n.setLocale(window.language)
+
+pp = path.join(__dirname, "..", "bookmark.json")
+bookmarks = fs.readJsonSync pp
 
 getIcon = (status) ->
   switch status
@@ -61,53 +65,15 @@ NavigatorBar = React.createClass
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
     $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
-  handleSetRes: (e) ->
+
+  handleSetRes: (width, height) ->
     nowWindow = remote.getCurrentWindow()
     bound = nowWindow.getBounds()
     {x, y} = bound
     borderX = bound.width - window.innerWidth
     borderY = bound.height - window.innerHeight
-    newWidth = parseInt(@state.width)
-    newHeight = parseInt(@state.height)
-    nowWindow.setBounds
-      x: x
-      y: y
-      width: parseInt(newWidth + borderX)
-      height: parseInt(newHeight + borderY + 50)
-  handleSetRes800: (e) ->
-    nowWindow = remote.getCurrentWindow()
-    bound = nowWindow.getBounds()
-    {x, y} = bound
-    borderX = bound.width - window.innerWidth
-    borderY = bound.height - window.innerHeight
-    newWidth = 800
-    newHeight = 480
-    nowWindow.setBounds
-      x: x
-      y: y
-      width: parseInt(newWidth + borderX)
-      height: parseInt(newHeight + borderY + 50)
-  handleSetRes960: (e) ->
-    nowWindow = remote.getCurrentWindow()
-    bound = nowWindow.getBounds()
-    {x, y} = bound
-    borderX = bound.width - window.innerWidth
-    borderY = bound.height - window.innerHeight
-    newWidth = 960
-    newHeight = 640
-    nowWindow.setBounds
-      x: x
-      y: y
-      width: parseInt(newWidth + borderX)
-      height: parseInt(newHeight + borderY + 50)
-  handleSetRes960580: (e) ->
-    nowWindow = remote.getCurrentWindow()
-    bound = nowWindow.getBounds()
-    {x, y} = bound
-    borderX = bound.width - window.innerWidth
-    borderY = bound.height - window.innerHeight
-    newWidth = 960
-    newHeight = 580
+    newWidth = width
+    newHeight = height
     nowWindow.setBounds
       x: x
       y: y
@@ -176,15 +142,8 @@ NavigatorBar = React.createClass
       e.preventDefault()
   handleRefresh: ->
     webview.reload()
-  onSelectLinkDMM: ->
-    webview.src = 'http://www.dmm.com/netgame/'
-    #@handleNavigate
-  onSelectLinkDMMR18: ->
-    webview.src = 'http://www.dmm.com/service/-/exchange/=/url=Sg9VTQFXDFcXAlBVVhlLGBMEWF1ZVwMW'
-    #@handleNavigate
-  onSelectLinkWiki: ->
-    webview.src = 'http://wikiwiki.jp/kancolle/'
-    #@handleNavigate
+  onSelectLink: (lnk) ->
+    webview.src = lnk
   componentDidMount: ->
     window.addEventListener 'resize', @handleResize
     webview.addEventListener 'page-title-set', @handleTitleSet
@@ -206,8 +165,8 @@ NavigatorBar = React.createClass
       </Col>
       <Col xs={7}>
         <ButtonGroup>
-          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='arrow-left' /></Button>
-          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='arrow-right' /></Button>
+          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='chevron-left' /></Button>
+          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='chevron-right' /></Button>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
@@ -230,16 +189,16 @@ NavigatorBar = React.createClass
                     <Input type='text' bsSize='small' value={@state.height} onChange={@handleSetHeight}/>
                   </Col>
                   <Col xs={1}>
-                    <Button bsSize='small' onClick={@handleSetRes}>
+                    <Button bsSize='small' onClick={@handleSetRes.bind this, @state.width, @state.height}>
                       <FontAwesome name='check' />
                     </Button>
                   </Col>
                 </Row>
                 <Row>
                   <div style={display: "flex", flexDirection: "row", marginTop: '10px'}>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes800}>800*480</Button>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes960580}>960*580</Button>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes960}>960*640</Button>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 800, 480}>800*480</Button>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 960, 580}>960*580</Button>
+                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 960, 640}>960*640</Button>
                   </div>
                 </Row>
               </Input>
@@ -259,9 +218,12 @@ NavigatorBar = React.createClass
         <span>　</span>
         <OverlayTrigger placement='top' overlay={<Tooltip>{__("Links")}</Tooltip>}>
           <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
-            <MenuItem onClick={@onSelectLinkDMM}>DMM netgame</MenuItem>
-            <MenuItem onClick={@onSelectLinkDMMR18}>DMM netgame (R18)</MenuItem>
-            <MenuItem onClick={@onSelectLinkWiki}>Kancolle Wiki</MenuItem>
+          {
+            for bookmark, j in bookmarks
+              [
+                <MenuItem onClick={@onSelectLink.bind this, bookmark.link}>{bookmark.name}</MenuItem>
+              ]
+          }
           </DropdownButton>
         </OverlayTrigger>
       </Col>
