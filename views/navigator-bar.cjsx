@@ -189,7 +189,7 @@ NavigatorBar = React.createClass
                     <Input type='text' bsSize='small' value={@state.height} onChange={@handleSetHeight}/>
                   </Col>
                   <Col xs={1}>
-                    <Button bsSize='small' onClick={@handleSetRes.bind this, @state.width, @state.height}>
+                    <Button bsSize='small' onClick={@handleSetRes.bind this, parseInt(@state.width), parseInt(@state.height)}>
                       <FontAwesome name='check' />
                     </Button>
                   </Col>
