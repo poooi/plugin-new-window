@@ -65,7 +65,6 @@ NavigatorBar = React.createClass
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
     $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
-
   handleSetRes: (width, height) ->
     nowWindow = remote.getCurrentWindow()
     bound = nowWindow.getBounds()
@@ -164,14 +163,13 @@ NavigatorBar = React.createClass
         <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
       </Col>
       <Col xs={7}>
-        <ButtonGroup>
+        <ButtonGroup className="btnGrp">
           <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='chevron-left' /></Button>
           <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='chevron-right' /></Button>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
-        <span>　</span>
-        <ButtonGroup>
+        <ButtonGroup className="btnGrp">
           <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then __('Volume off') else __('Volume on')}</Tooltip>}>
             <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           </OverlayTrigger>
@@ -195,10 +193,10 @@ NavigatorBar = React.createClass
                   </Col>
                 </Row>
                 <Row>
-                  <div style={display: "flex", flexDirection: "row", marginTop: '10px'}>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 800, 480}>800*480</Button>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 960, 580}>960*580</Button>
-                    <Button bsSize='small' style={flex: 1,marginLeft: '5px',marginRight: '5px'} onClick={@handleSetRes.bind this, 960, 640}>960*640</Button>
+                  <div id="resSetting">
+                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 800, 480}>800*480</Button>
+                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 960, 580}>960*580</Button>
+                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 960, 640}>960*640</Button>
                   </div>
                 </Row>
               </Input>
@@ -211,13 +209,11 @@ NavigatorBar = React.createClass
             </OverlayTrigger>
           </OverlayTrigger>
         </ButtonGroup>
-        <span>　</span>
         <OverlayTrigger placement='top' overlay={<Tooltip>{__("Developer Tools")}</Tooltip>}>
-          <Button bsSize='small' onClick={@handleDebug}><FontAwesome name='gears' /></Button>
+          <Button bsSize='small' className="btnGrp" onClick={@handleDebug}><FontAwesome name='gears' /></Button>
         </OverlayTrigger>
-        <span>　</span>
         <OverlayTrigger placement='top' overlay={<Tooltip>{__("Links")}</Tooltip>}>
-          <DropdownButton bsSize='small' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
+          <DropdownButton bsSize='small' className="btnGrp" title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
           {
             for bookmark, j in bookmarks
               [
