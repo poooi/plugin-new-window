@@ -1,18 +1,17 @@
-i18n = require './node-modules/i18n'
+i18n = require 'i18n'
 path = require 'path-extra'
 {__} = i18n
 {React, ReactBootstrap, FontAwesome} = window
 remote = require 'remote'
 windowManager = remote.require './lib/window'
 
-i18n.configure({
-    locales:['en-US', 'ja-JP', 'zh-CN'],
-    defaultLocale: 'zh-CN',
-    directory: path.join(__dirname, "i18n"),
-    updateFiles: false,
-    indent: "\t",
-    extension: '.json'
-})
+i18n.configure
+  locales:['en-US', 'ja-JP', 'zh-CN']
+  defaultLocale: 'zh-CN'
+  directory: path.join(__dirname, "i18n")
+  updateFiles: false
+  indent: "\t"
+  extension: '.json'
 i18n.setLocale(window.language)
 
 module.exports =

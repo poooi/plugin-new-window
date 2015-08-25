@@ -1,4 +1,4 @@
-i18n = require '../node-modules/i18n'
+i18n = require 'i18n'
 path = require 'path-extra'
 fs = require 'fs-extra'
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
@@ -8,14 +8,13 @@ remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')
 
-i18n.configure({
-    locales:['en-US', 'ja-JP', 'zh-CN'],
-    defaultLocale: 'zh-CN',
-    directory: path.join(__dirname, '..', "i18n"),
-    updateFiles: false,
-    indent: "\t",
-    extension: '.json'
-})
+i18n.configure
+  locales: ['en-US', 'ja-JP', 'zh-CN']
+  defaultLocale: 'zh-CN'
+  directory: path.join(__dirname, '..', 'i18n')
+  updateFiles: false,
+  indent: "\t"
+  extension: '.json'
 i18n.setLocale(window.language)
 
 pp = path.join(__dirname, "..", "bookmark.json")
