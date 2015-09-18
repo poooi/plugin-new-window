@@ -37,12 +37,12 @@ button .fa {
   cursor: pointer !important;
   width: 12px;
 }
-.resBtn {
+.res-btn {
   flex: 1;
   margin-left: 5px;
   margin-right: 5px;
 }
-.btnGrp {
+.btn-grp {
   margin-left: 10px;
 }
 #resSetting {

@@ -2,7 +2,7 @@ i18n = require 'i18n'
 path = require 'path-extra'
 fs = require 'fs-extra'
 {$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
-{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip} = ReactBootstrap
+{Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip, Overlay} = ReactBootstrap
 {__} = i18n
 remote = require 'remote'
 webview = $('inner-page webview')
@@ -53,6 +53,7 @@ NavigatorBar = React.createClass
     navigateUrl: 'http://www.dmm.com/netgame'
     width: window.innerWidth
     height: window.innerHeight - 50
+    show: false
   handleTitleSet: (e) ->
     webview.insertCSS """
       * {
@@ -77,6 +78,8 @@ NavigatorBar = React.createClass
       y: y
       width: parseInt(newWidth + borderX)
       height: parseInt(newHeight + borderY + 50)
+    @setState
+      show: !@state.show
   handleSetUrl: (e) ->
     @setState
       navigateUrl: e.target.value
@@ -114,6 +117,9 @@ NavigatorBar = React.createClass
     if webview.setAudioMuted?
       webview.setAudioMuted muted
     @setState {muted}
+  toggle: ->
+    @setState
+      show: !@state.show
   handleJustify: ->
     webview.executeJavaScript """
       var iframe = document.querySelector('#game_frame').contentWindow.document;
@@ -134,7 +140,11 @@ NavigatorBar = React.createClass
       window.scrollTo(x, y);
     """
   handleDebug: ->
-    webview.openDevTools()
+    webview.openDevTools
+      detach: true
+  handleDevTools: ->
+    remote.getCurrentWindow().openDevTools
+      detach: true
   enterPress: (e) ->
     if e.keyCode == 13
       e.preventDefault()
@@ -162,20 +172,20 @@ NavigatorBar = React.createClass
         <Input type='text' bsSize='small' id='geturl' placeholder='输入网页地址' value={@state.navigateUrl} onChange={@handleSetUrl} onKeyDown = {@enterPress} />
       </Col>
       <Col xs={7}>
-        <ButtonGroup className="btnGrp">
+        <ButtonGroup className="btn-grp">
           <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='chevron-left' /></Button>
           <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='chevron-right' /></Button>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
-        <ButtonGroup className="btnGrp">
+        <ButtonGroup className="btn-grp">
           <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then __('Volume off') else __('Volume on')}</Tooltip>}>
             <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           </OverlayTrigger>
           <OverlayTrigger placement='top' overlay={<Tooltip>{__("Auto adjust")}</Tooltip>}>
             <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
           </OverlayTrigger>
-          <OverlayTrigger trigger='click' rootClose={true} placement='top' overlay={
+          <Overlay show={@state.show} rootClose={true} target={() => React.findDOMNode(@refs.target)} placement='top'>
             <Popover title={__("Change resolution")}>
               <Input  wrapperClassName='wrapper'>
                 <Row>
@@ -193,26 +203,25 @@ NavigatorBar = React.createClass
                 </Row>
                 <Row>
                   <div id="resSetting">
-                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 800, 480}>800*480</Button>
-                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 960, 580}>960*580</Button>
-                    <Button bsSize='small' className="resBtn" onClick={@handleSetRes.bind this, 960, 640}>960*640</Button>
+                    <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind this, 800, 480}>800*480</Button>
+                    <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind this, 960, 580}>960*580</Button>
+                    <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind this, 960, 640}>960*640</Button>
                   </div>
                 </Row>
               </Input>
             </Popover>
-            }>
-            <OverlayTrigger placement='top' overlay={<Tooltip>{__("Change resolution")}</Tooltip>}>
-              <Button id='res-btn' bsStyle='default' bsSize='small' html='true' onClick={@props.switchShow}>
-                <FontAwesome name='arrows'/>
-              </Button>
-            </OverlayTrigger>
+          </Overlay>
+          <OverlayTrigger placement='top' overlay={<Tooltip>{__("Change resolution")}</Tooltip>}>
+            <Button id='res-btn' bsStyle='default' bsSize='small' ref='target' style={marginLeft: 0} onClick={@toggle}>
+              <FontAwesome name='arrows'/>
+            </Button>
           </OverlayTrigger>
         </ButtonGroup>
         <OverlayTrigger placement='top' overlay={<Tooltip>{__("Developer Tools")}</Tooltip>}>
-          <Button bsSize='small' className="btnGrp" onClick={@handleDebug}><FontAwesome name='gears' /></Button>
+          <Button bsSize='small' className="btn-grp" onClick={@handleDebug} onContextMenu={@handleDevTools}><FontAwesome name='gears' /></Button>
         </OverlayTrigger>
         <OverlayTrigger placement='top' overlay={<Tooltip>{__("Links")}</Tooltip>}>
-          <DropdownButton bsSize='small' className="btnGrp" title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
+          <DropdownButton bsSize='small' className="btn-grp" title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
           {
             for bookmark, j in bookmarks
               [
