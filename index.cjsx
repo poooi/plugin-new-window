@@ -33,5 +33,6 @@ module.exports =
       if process.env.DEBUG?
         newWindow.openDevTools
           detach: true
+    newWindow.reloadArea = 'inner-page webview'
     newWindow.loadUrl "file://#{__dirname}/index.html"
     newWindow.show()
