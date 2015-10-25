@@ -8,15 +8,6 @@ remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')
 
-i18n.configure
-  locales: ['en-US', 'ja-JP', 'zh-CN']
-  defaultLocale: 'zh-CN'
-  directory: path.join(__dirname, '..', 'i18n')
-  updateFiles: false,
-  indent: "\t"
-  extension: '.json'
-i18n.setLocale(window.language)
-
 pp = path.join(__dirname, "..", "bookmark.json")
 bookmarks = fs.readJsonSync pp
 
@@ -30,18 +21,6 @@ getIcon = (status) ->
       <FontAwesome name='check' />
     when 1
       <FontAwesome name='spinner' spin />
-confirmExit = false
-exitPlugin = ->
-  confirmExit = true
-  window.close()
-window.onbeforeunload = (e) ->
-  if confirmExit
-    return true
-  else
-    if window.confirm(__ "Confirm?")
-      return true
-    else
-      return false
 NavigatorBar = React.createClass
   getInitialState: ->
     # Status
@@ -64,7 +43,7 @@ NavigatorBar = React.createClass
     remote.getCurrentWindow().setTitle webview.getTitle()
   handleResize: (e) ->
     $('inner-page')?.style?.height = "#{window.innerHeight - 50}px"
-    $('inner-page webview')?.style?.height = $('inner-page webview /deep/ object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
+    $('inner-page webview')?.style?.height = $('inner-page webview')?.shadowRoot?.querySelector('object[is=browserplugin]')?.style?.height = "#{window.innerHeight - 50}px"
   handleSetRes: (width, height) ->
     nowWindow = remote.getCurrentWindow()
     bound = nowWindow.getBounds()
@@ -104,7 +83,7 @@ NavigatorBar = React.createClass
   handleNavigate: ->
     if @state.navigateUrl.substr(0,7).toLowerCase()!='http://'
       if @state.navigateUrl.substr(0,8).toLowerCase()!='https://'
-        @state.navigateUrl = "http://" + @state.navigateUrl
+        @state.navigateUrl = "http://#{@state.navigateUrl}"
     webview.src = @state.navigateUrl
   handleBack: ->
     if webview.canGoBack()
@@ -117,9 +96,11 @@ NavigatorBar = React.createClass
     if webview.setAudioMuted?
       webview.setAudioMuted muted
     @setState {muted}
-  toggle: ->
+  handlePopShow: ->
     @setState
       show: !@state.show
+  handleUnlockWebview: ->
+    webview.executeJavaScript "document.documentElement.style.overflow = 'auto'"
   handleJustify: ->
     webview.executeJavaScript """
       var iframe = document.querySelector('#game_frame').contentWindow.document;
@@ -179,15 +160,15 @@ NavigatorBar = React.createClass
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
         <ButtonGroup className="btn-grp">
-          <OverlayTrigger placement='top' overlay={<Tooltip>{if @state.muted then __('Volume off') else __('Volume on')}</Tooltip>}>
+          <OverlayTrigger placement='top' overlay={<Tooltip id='btn-mut'>{if @state.muted then __('Volume off') else __('Volume on')}</Tooltip>}>
             <Button bsSize='small' onClick={@handleSetMuted}><FontAwesome name={if @state.muted then 'volume-off' else 'volume-up'} /></Button>
           </OverlayTrigger>
-          <OverlayTrigger placement='top' overlay={<Tooltip>{__("Auto adjust")}</Tooltip>}>
-            <Button bsSize='small' onClick={@handleJustify}><FontAwesome name='arrows-alt' /></Button>
+          <OverlayTrigger placement='top' overlay={<Tooltip id='btn-adj'>{__("Auto adjust")}</Tooltip>}>
+            <Button bsSize='small' onClick={@handleJustify} onContextMenu={@handleUnlockWebview}><FontAwesome name='arrows-alt' /></Button>
           </OverlayTrigger>
-          <Overlay show={@state.show} rootClose={true} target={() => React.findDOMNode(@refs.target)} placement='top'>
-            <Popover title={__("Change resolution")}>
-              <Input  wrapperClassName='wrapper'>
+          <Overlay show={@state.show} onHide={@handlePopShow} rootClose={true} target={() => React.findDOMNode(@refs.target)} placement='top'>
+            <Popover id='pop-res' title={__("Change resolution")}>
+              <Input wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={4}>
                     <Input type='text' bsSize='small' value={@state.width} onChange={@handleSetWidth}/>
@@ -211,17 +192,17 @@ NavigatorBar = React.createClass
               </Input>
             </Popover>
           </Overlay>
-          <OverlayTrigger placement='top' overlay={<Tooltip>{__("Change resolution")}</Tooltip>}>
-            <Button id='res-btn' bsStyle='default' bsSize='small' ref='target' style={marginLeft: 0} onClick={@toggle}>
+          <OverlayTrigger placement='top' overlay={<Tooltip id='btn-res'>{__("Change resolution")}</Tooltip>}>
+            <Button id='res-btn' bsStyle='default' bsSize='small' ref='target' style={marginLeft: 0} onClick={@handlePopShow}>
               <FontAwesome name='arrows'/>
             </Button>
           </OverlayTrigger>
         </ButtonGroup>
-        <OverlayTrigger placement='top' overlay={<Tooltip>{__("Developer Tools")}</Tooltip>}>
-          <Button bsSize='small' className="btn-grp" onClick={@handleDebug} onContextMenu={@handleDevTools}><FontAwesome name='gears' /></Button>
+        <OverlayTrigger placement='top' overlay={<Tooltip id='btn-dtl'>{__("Developer Tools")}</Tooltip>}>
+          <Button bsSize='small' className="btn-grp" onContextMenu={@handleDebug} onClick={@handleDevTools}><FontAwesome name='gears' /></Button>
         </OverlayTrigger>
-        <OverlayTrigger placement='top' overlay={<Tooltip>{__("Links")}</Tooltip>}>
-          <DropdownButton bsSize='small' className="btn-grp" title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
+        <OverlayTrigger placement='top' overlay={<Tooltip id='btn-lnk'>{__("Links")}</Tooltip>}>
+          <DropdownButton id='btn-bkm' bsSize='small' className="btn-grp" title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
           {
             for bookmark, j in bookmarks
               [

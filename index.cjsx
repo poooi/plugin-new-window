@@ -20,16 +20,17 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.3.0'
+  version: '1.4.0'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
-        # Use config
-        realClose: true
-        x: config.get 'poi.window.x', 0
-        y: config.get 'poi.window.y', 0
-        width: 1100
-        height: 700
+      # Use config
+      realClose: true
+      x: config.get 'poi.window.x', 0
+      y: config.get 'poi.window.y', 0
+      width: 1100
+      height: 700
+      'title-bar-style': 'hidden'
       if process.env.DEBUG?
         newWindow.openDevTools
           detach: true
