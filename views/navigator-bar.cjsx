@@ -82,6 +82,9 @@ NavigatorBar = React.createClass
   handleSetWidth: (e) ->
     @setState
       width: e.target.value
+  handleSetHeight: (e) ->
+    @setState
+      height: e.target.value
   handleSetBMName: (e) ->
     @setState
       bmname: e.target.value
