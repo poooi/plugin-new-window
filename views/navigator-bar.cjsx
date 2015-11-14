@@ -266,7 +266,7 @@ NavigatorBar = React.createClass
           {
             for bookmark, j in @state.bookmarks
               [
-                <MenuItem key={1000 + j} eventKey={1000 + j} onSelect={@onSelectLink.bind @, bookmark.link}>
+                <MenuItem key={j} eventKey={j} onSelect={@onSelectLink.bind @, bookmark.link}>
                   {bookmark.name}
                   <Button className='del-btn' bsStyle='danger' bsSize='xsmall' onClick={@handleSelectDel.bind @, j}>
                     <FontAwesome name='times'/>
