@@ -10,5 +10,10 @@
   "Built-in browser": "一心二用",
   "Confirm?": "確定離開？",
   "Exit": "退出",
-  "Cancel": "取消"
+  "Cancel": "取消",
+  "Add bookmark": "添加書籤",
+  "Del bookmark": "刪除書籤",
+  "Confirm": "確定",
+  "Name": "書籤名",
+  "Address": "地址"
 }

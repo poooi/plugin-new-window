@@ -9,5 +9,10 @@
   "Built-in browser": "内蔵ブラウザ",
   "Confirm?": "終了しますか？",
   "Exit": "終了",
-  "Cancel": "取り消し"
+  "Cancel": "取り消し",
+  "Add bookmark": "ブックマーク追加",
+  "Del bookmark": "ブックマーク削除",
+  "Confirm": "確認する",
+  "Name": "名前",
+  "Address": "アドレス"
 }
