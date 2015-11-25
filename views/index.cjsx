@@ -16,6 +16,8 @@ i18n.configure
 i18n.setLocale(window.language)
 NavigatorBar = require './navigator-bar'
 
+$('#font-awesome')?.setAttribute 'href', "#{ROOT}/components/font-awesome/css/font-awesome.min.css"
+
 confirmExit = false
 exitPlugin = ->
   confirmExit = true

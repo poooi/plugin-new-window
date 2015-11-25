@@ -1,12 +1,5 @@
 path = require 'path-extra'
 
-# Environments
-window.remote = require 'remote'
-window.ROOT = path.join(__dirname, '..', '..')
-window.APPDATA_PATH = remote.getGlobal 'APPDATA_PATH'
-window.POI_VERSION = remote.getGlobal 'POI_VERSION'
-window.SERVER_HOSTNAME = remote.getGlobal 'SERVER_HOSTNAME'
-
 # Shortcuts and Components
 window._ = require 'underscore'
 window.$ = (param) -> document.querySelector(param)
