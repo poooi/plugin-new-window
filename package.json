@@ -1,6 +1,6 @@
 {
-  "name": "new-window",
-  "version": "1.3.0",
+  "name": "poi-plugin-new-window",
+  "version": "1.6.0",
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
   "main": "index.cjsx",
   "scripts": {
