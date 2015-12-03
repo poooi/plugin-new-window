@@ -5,6 +5,7 @@ window._ = require 'underscore'
 window.$ = (param) -> document.querySelector(param)
 window.$$ = (param) -> document.querySelectorAll(param)
 window.React = require 'react'
+window.ReactDOM = require 'react-dom'
 window.ReactBootstrap = require 'react-bootstrap'
 window.FontAwesome = require 'react-fontawesome'
 

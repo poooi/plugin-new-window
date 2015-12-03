@@ -1,7 +1,7 @@
 i18n = require 'i18n'
 path = require 'path-extra'
 fs = require 'fs-extra'
-{$, $$, _, React, ReactBootstrap, FontAwesome, ROOT, APPDATA_PATH} = window
+{$, $$, _, React, ReactDOM, ReactBootstrap, FontAwesome, ROOT, APPDATA_PATH} = window
 {Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip, Overlay} = ReactBootstrap
 {__} = i18n
 remote = require 'remote'
@@ -220,7 +220,7 @@ NavigatorBar = React.createClass
           <OverlayTrigger placement='top' overlay={<Tooltip id='btn-adj'>{__("Auto adjust")}</Tooltip>}>
             <Button bsSize='small' onClick={@handleJustify} onContextMenu={@handleUnlockWebview}><FontAwesome name='arrows-alt' /></Button>
           </OverlayTrigger>
-          <Overlay show={@state.resShow} onHide={@handleResPopShow} rootClose={true} target={() => React.findDOMNode(@refs.resPop)} placement='top'>
+          <Overlay show={@state.resShow} onHide={@handleResPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(@refs.resPop)} placement='top'>
             <Popover id='pop-res' title={__("Change resolution")}>
               <Input wrapperClassName='wrapper'>
                 <Row>
@@ -278,7 +278,7 @@ NavigatorBar = React.createClass
             <MenuItem key={2000} eventKey={2000} onSelect={@handleAddPopShow}>{__ 'Add bookmark'}</MenuItem>
           </DropdownButton>
         </OverlayTrigger>
-        <Overlay show={@state.addShow} onHide={@handleAddPopShow} rootClose={true} target={() => React.findDOMNode(@refs.addPop)} placement='top'>
+        <Overlay show={@state.addShow} onHide={@handleAddPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(@refs.addPop)} placement='top'>
           <Popover style={width: 400} id='pop-add' title={__("Add bookmark")}>
             <Col xs={6}>
               <Input label={__ 'Name'} type='text' bsSize='small' value={@state.bmname} onChange={@handleSetBMName} />
@@ -291,7 +291,7 @@ NavigatorBar = React.createClass
             </Col>
           </Popover>
         </Overlay>
-        <Overlay show={@state.delShow} onHide={@handleDelPopShow} rootClose={true} target={() => React.findDOMNode(@refs.addPop)} placement='top'>
+        <Overlay show={@state.delShow} onHide={@handleDelPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(@refs.addPop)} placement='top'>
           <Popover id='pop-del' title={__("Del bookmark")}>
             <Col xs={6}>
               <Button className='add-btn' onClick={@handleDelPopShow}>{__ 'Cancel'}</Button>

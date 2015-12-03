@@ -1,4 +1,4 @@
-{$, $$, _, React, ReactBootstrap, FontAwesome, ROOT} = window
+{$, $$, _, React, ReactDOM, ReactBootstrap, FontAwesome, ROOT} = window
 {Button, Modal} = ReactBootstrap
 Divider = require './divider'
 path = require 'path-extra'
@@ -65,4 +65,4 @@ WebArea = React.createClass
         </Modal>
       </div>
     </form>
-React.render <WebArea />, $('web-area')
+ReactDOM.render <WebArea />, $('web-area')
