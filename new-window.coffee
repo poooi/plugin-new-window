@@ -1,13 +1,13 @@
 path = require 'path-extra'
 
 # Shortcuts and Components
-window._ = require 'underscore'
+window._ = require "#{ROOT}/node_modules/underscore"
 window.$ = (param) -> document.querySelector(param)
 window.$$ = (param) -> document.querySelectorAll(param)
-window.React = require 'react'
-window.ReactDOM = require 'react-dom'
-window.ReactBootstrap = require 'react-bootstrap'
-window.FontAwesome = require 'react-fontawesome'
+window.React = require "#{ROOT}/node_modules/react"
+window.ReactDOM = require "#{ROOT}/node_modules/react-dom"
+window.ReactBootstrap = require "#{ROOT}/node_modules/react-bootstrap"
+window.FontAwesome = require "#{ROOT}/node_modules/react-fontawesome"
 
 # Node modules
 window.config = remote.require './lib/config'

@@ -1,7 +1,7 @@
 i18n = require 'i18n'
 path = require 'path-extra'
 {__} = i18n
-{React, ReactBootstrap, FontAwesome} = window
+{React, ReactDOM, ReactBootstrap, FontAwesome} = window
 remote = require 'remote'
 windowManager = remote.require './lib/window'
 
@@ -20,7 +20,7 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.6.1'
+  version: '1.6.2'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
