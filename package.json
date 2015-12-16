@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-new-window",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
   "main": "index.cjsx",
   "scripts": {
@@ -19,12 +19,12 @@
   },
   "homepage": "https://github.com/poooi/plugin-new-window#readme",
   "dependencies": {
-    "i18n": "^0.5.0"
+
   },
   "readme": "# new-windows\nopen a new browser window\n#### Usage\nPut the folder into /path/to/poi/resources/app/plugins\n",
   "readmeFilename": "README.md",
   "gitHead": "94b85575cb763bb55a176475a8a5d491e512059e",
-  "_id": "poi-plugin-new-window@1.6.0",
-  "_shasum": "0c120936f4bdcc9157c8267f2ed97ee4e0b5b098",
-  "_from": "poi-plugin-new-window@latest"
+  "_id": "poi-plugin-new-window@1.6.2",
+  "_shasum": "d64f91cac82e9eaf336bb603129a7399162da125",
+  "_from": "poi-plugin-new-window@1.6.2"
 }

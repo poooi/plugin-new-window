@@ -1,18 +1,18 @@
-i18n = require 'i18n'
 path = require 'path-extra'
-{__} = i18n
 {React, ReactDOM, ReactBootstrap, FontAwesome} = window
 remote = require 'remote'
 windowManager = remote.require './lib/window'
 
-i18n.configure
-  locales:['en-US', 'ja-JP', 'zh-CN']
-  defaultLocale: 'zh-CN'
-  directory: path.join(__dirname, "i18n")
-  updateFiles: false
-  indent: "\t"
+i18n = new (require 'i18n-2')
+  locales:['en-US', 'ja-JP', 'zh-CN', 'zh-TW'],
+  defaultLocale: 'zh-CN',
+  directory: path.join(__dirname, 'i18n'),
+  updateFiles: false,
+  indent: "\t",
   extension: '.json'
+  devMode: false
 i18n.setLocale(window.language)
+__ = i18n.__.bind(i18n)
 
 module.exports =
   name: 'New-Window'
@@ -20,7 +20,7 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.6.2'
+  version: '1.6.3'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow

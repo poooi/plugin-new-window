@@ -1,9 +1,8 @@
-i18n = require 'i18n'
 path = require 'path-extra'
 fs = require 'fs-extra'
 {$, $$, _, React, ReactDOM, ReactBootstrap, FontAwesome, ROOT, APPDATA_PATH} = window
 {Grid, Col, Button, ButtonGroup, Input, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip, Overlay} = ReactBootstrap
-{__} = i18n
+__ = i18n.__.bind(i18n)
 remote = require 'remote'
 webview = $('inner-page webview')
 innerpage = $('inner-page')

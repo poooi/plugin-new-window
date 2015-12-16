@@ -3,17 +3,18 @@
 Divider = require './divider'
 path = require 'path-extra'
 fs = require "fs-extra"
-i18n = require 'i18n'
-{__} = i18n
 
-i18n.configure
-  locales: ['en-US', 'ja-JP', 'zh-CN']
-  defaultLocale: 'zh-CN'
-  directory: path.join(__dirname, '..', 'i18n')
+window.i18n = new (require 'i18n-2')
+  locales:['en-US', 'ja-JP', 'zh-CN', 'zh-TW'],
+  defaultLocale: 'zh-CN',
+  directory: path.join(__dirname, '..', 'i18n'),
   updateFiles: false,
-  indent: "\t"
+  indent: "\t",
   extension: '.json'
+  devMode: false
 i18n.setLocale(window.language)
+__ = i18n.__.bind(i18n)
+
 NavigatorBar = require './navigator-bar'
 
 $('#font-awesome')?.setAttribute 'href', "#{ROOT}/components/font-awesome/css/font-awesome.min.css"
