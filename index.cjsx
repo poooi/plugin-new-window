@@ -20,7 +20,7 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.6.3'
+  version: '1.6.4'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
@@ -35,5 +35,5 @@ module.exports =
       newWindow.openDevTools
         detach: true
     newWindow.reloadArea = 'inner-page webview'
-    newWindow.loadUrl "file://#{__dirname}/index.html"
+    newWindow.loadURL "file://#{__dirname}/index.html"
     newWindow.show()
