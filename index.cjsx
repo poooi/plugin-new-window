@@ -14,13 +14,15 @@ i18n = new (require 'i18n-2')
 i18n.setLocale(window.language)
 __ = i18n.__.bind(i18n)
 
+count = 0
+
 module.exports =
   name: 'New-Window'
   priority: 100
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.6.4'
+  version: '1.7.0'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
@@ -31,6 +33,8 @@ module.exports =
       width: 1100
       height: 700
       'title-bar-style': 'hidden'
+      indexName: "newWindow#{count}"
+    count++
     if process.env.DEBUG?
       newWindow.openDevTools
         detach: true
