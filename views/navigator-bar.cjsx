@@ -112,11 +112,13 @@ NavigatorBar = React.createClass
         @state.navigateUrl = "http://#{@state.navigateUrl}"
     webview.src = @state.navigateUrl
   handleBack: ->
-    if webview.canGoBack()
-      webview.goBack()
+    if webview.canGoBack?
+      if webview.canGoBack()
+        webview.goBack()
   handleForward: ->
-    if webview.canGoForward()
-      webview.goForward()
+    if webview.canGoForward?
+      if webview.canGoForward()
+        webview.goForward()
   handleSetMuted: ->
     muted = !@state.muted
     if webview.setAudioMuted?
@@ -162,7 +164,8 @@ NavigatorBar = React.createClass
     if e.keyCode == 13
       e.preventDefault()
   handleRefresh: ->
-    webview.reload()
+    if webview.reload?
+      webview.reload()
   onSelectLink: (lnk) ->
     webview.src = lnk
   addBookmark: (e) ->
