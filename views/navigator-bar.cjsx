@@ -210,8 +210,8 @@ NavigatorBar = React.createClass
       </Col>
       <Col xs={7}>
         <ButtonGroup className="btn-grp">
-          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoBack() onClick={@handleBack}><FontAwesome name='chevron-left' /></Button>
-          <Button bsSize='small' bsStyle='info' disabled=!webview.canGoForward() onClick={@handleForward}><FontAwesome name='chevron-right' /></Button>
+          <Button bsSize='small' bsStyle='info' disabled={if webview.canGoBack? then !webview.canGoBack() else true} onClick={@handleBack}><FontAwesome name='chevron-left' /></Button>
+          <Button bsSize='small' bsStyle='info' disabled={if webview.canGoForward? then !webview.canGoForward() else true} onClick={@handleForward}><FontAwesome name='chevron-right' /></Button>
           <Button bsSize='small' bsStyle='primary' onClick={@handleNavigate}>{getIcon(@state.navigateStatus)}</Button>
           <Button bsSize='small' bsStyle='warning' onClick={@handleRefresh}><FontAwesome name='refresh' /></Button>
         </ButtonGroup>
