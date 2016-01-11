@@ -22,7 +22,7 @@ module.exports =
   displayName: <span><FontAwesome name='sitemap' key={0} /> {__ 'Built-in browser'}</span>
   author: 'KochiyaOcean'
   link: 'https://github.com/kochiyaocean'
-  version: '1.7.3'
+  version: '1.7.4'
   description: __ 'Open a new browser window'
   handleClick: ->
     newWindow = windowManager.createWindow
