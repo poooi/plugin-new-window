@@ -19,12 +19,5 @@
   },
   "homepage": "https://github.com/poooi/plugin-new-window#readme",
   "dependencies": {
-
-  },
-  "readme": "# new-windows\nopen a new browser window\n#### Usage\nPut the folder into /path/to/poi/resources/app/plugins\n",
-  "readmeFilename": "README.md",
-  "gitHead": "94b85575cb763bb55a176475a8a5d491e512059e",
-  "_id": "poi-plugin-new-window@1.6.2",
-  "_shasum": "d64f91cac82e9eaf336bb603129a7399162da125",
-  "_from": "poi-plugin-new-window@1.6.2"
+  }
 }
