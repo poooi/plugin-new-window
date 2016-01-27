@@ -199,6 +199,12 @@ NavigatorBar = React.createClass
       return !webview.canGoForward()
     catch error
       return true
+  handleSetWebviewRatio: (e) ->
+    webview.insertCSS """
+      html {
+        zoom: #{e.target.value}
+      }
+    """
   componentDidMount: ->
     window.addEventListener 'resize', @handleResize
     webview.addEventListener 'page-title-set', @handleTitleSet
@@ -242,18 +248,36 @@ NavigatorBar = React.createClass
                   <Col xs={4}>
                     <Input type='text' bsSize='small' value={@state.height} onChange={@handleSetHeight} />
                   </Col>
-                  <Col xs={1}>
-                    <Button bsSize='small' onClick={@handleSetRes.bind @, parseInt(@state.width), parseInt(@state.height)}>
+                  <Col xs={4}>
+                    <Button bsSize='small' style={width: '100%'} onClick={@handleSetRes.bind @, parseInt(@state.width), parseInt(@state.height)}>
                       <FontAwesome name='check' />
                     </Button>
                   </Col>
                 </Row>
                 <Row>
-                  <div id="resSetting">
+                  <Col xs={4}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 800, 480}>800*480</Button>
+                  </Col>
+                  <Col xs={4}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 960, 580}>960*580</Button>
+                  </Col>
+                  <Col xs={4}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 960, 640}>960*640</Button>
-                  </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} style={paddingTop: 5; marginBottom: -15}>
+                    <Input type="select" onChange={@handleSetWebviewRatio} defaultValue={1}>
+                      {
+                        i = 0
+                        while i < 7
+                          i++
+                          <option key={i} value={i * 0.25 + 0.25}>
+                            {i * 25 + 25}%
+                          </option>
+                      }
+                    </Input>
+                  </Col>
                 </Row>
               </Input>
             </Popover>
