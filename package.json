@@ -11,7 +11,8 @@
     "url": "git+https://github.com/poooi/plugin-new-window.git"
   },
   "author": {
-    "name": "KochiyaOcean"
+    "name": "KochiyaOcean",
+    "link": "https://github.com/kochiyaocean"
   },
   "license": "MIT",
   "bugs": {
@@ -19,5 +20,11 @@
   },
   "homepage": "https://github.com/poooi/plugin-new-window#readme",
   "dependencies": {
+  },
+  "poiPlugin": {
+    "title": "Built-in browser",
+    "description": "Open a new browser window",
+    "icon": "fa/sitemap",
+    "priority": 99
   }
 }
