@@ -40,6 +40,9 @@ WebArea = React.createClass
     @setState
       showModal: true
   componentDidMount: ->
+    remote.getCurrentWindow().webContents.on 'dom-ready', ->
+      window.dispatchEvent new Event 'resize'
+      remote.getCurrentWindow().reloadArea = 'inner-page webview'
     window.addEventListener 'close-plugin', @openModal
   componentWillUnmount: ->
     window.removeEventListener 'close-plugin', @openModal
