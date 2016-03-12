@@ -12,4 +12,3 @@ window.MODULE_PATH = remote.getGlobal('MODULE_PATH');
 
 require('module').globalPaths.push(MODULE_PATH);
 
-require(ROOT + "/components/coffee-script/extras/coffee-script.js");
