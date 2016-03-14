@@ -16,17 +16,7 @@ window.config = remote.require './lib/config'
 window.language = config.get 'poi.language', navigator.language
 
 # Custom theme
-window.theme = config.get 'poi.theme', '__default__'
-if theme == '__default__'
-  $('#bootstrap-css')?.setAttribute 'href', "file://" + require.resolve('bootstrap/dist/css/bootstrap.css')
-else
-  $('#bootstrap-css')?.setAttribute 'href', "file://#{ROOT}/assets/themes/#{theme}/css/#{theme}.css"
-window.addEventListener 'theme.change', (e) ->
-  window.theme = e.detail.theme
-  if theme == '__default__'
-    $('#bootstrap-css')?.setAttribute 'href', "file://" + require.resolve('bootstrap/dist/css/bootstrap.css')
-  else
-    $('#bootstrap-css')?.setAttribute 'href', "file://#{ROOT}/assets/themes/#{theme}/css/#{theme}.css"
+require "#{ROOT}/views/env-parts/theme"
 
 
 require 'coffee-react/register'
