@@ -200,9 +200,18 @@ NavigatorBar = React.createClass
     catch error
       return true
   handleSetWebviewRatio: (e) ->
-    webview.insertCSS """
-      html {
-        zoom: #{e.target.value}
+    webview.executeJavaScript """
+      if (document.querySelector('#game_frame') != null) {
+        var iframe = document.querySelector('#game_frame').contentWindow.document;
+        document.querySelector('html').style.zoom = #{e.target.value};
+        iframe.querySelector('html').style.zoom = #{e.target.value};
+        if (iframe.querySelector('iframe') != null) {
+          var iframe1 = iframe.querySelector('iframe').contentWindow.document;
+          iframe1.querySelector('html').style.zoom = #{e.target.value};
+        }
+      } else if (document.querySelector('embed') != null) {
+        var iframe = document.querySelector('embed');
+        document.querySelector('html').style.zoom = #{e.target.value};
       }
     """
   componentDidMount: ->
