@@ -145,10 +145,13 @@ NavigatorBar = React.createClass
       if (iframe.querySelector('embed')!=null) {
         x1 = iframe.querySelector('embed').getBoundingClientRect().left;
         y1 = iframe.querySelector('embed').getBoundingClientRect().top;
-      } else if (iframe.querySelector('#aigis')!=null) {
-        var iframe1 = iframe.querySelector('#aigis').contentWindow.document;
+      } else if (iframe.querySelector('iframe')!=null) {
+        var iframe1 = iframe.querySelector('iframe').contentWindow.document;
         x1 = iframe1.querySelector('canvas').getBoundingClientRect().left;
         y1 = iframe1.querySelector('canvas').getBoundingClientRect().top;
+      } else if (iframe.querySelector('canvas')!=null) {
+        x1 = iframe.querySelector('canvas').getBoundingClientRect().left;
+        y1 = iframe.querySelector('canvas').getBoundingClientRect().top;
       }
       var x = document.querySelector('#game_frame').getBoundingClientRect().left + x1;
       var y = document.querySelector('#game_frame').getBoundingClientRect().top + y1;
@@ -263,15 +266,18 @@ NavigatorBar = React.createClass
                     </Button>
                   </Col>
                 </Row>
-                <Row>
-                  <Col xs={4}>
+                <Row style={width: '100%'}>
+                  <Col xs={3}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 800, 480}>800*480</Button>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={3}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 960, 580}>960*580</Button>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={3}>
                     <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 960, 640}>960*640</Button>
+                  </Col>
+                  <Col xs={3}>
+                    <Button bsSize='small' className="res-btn" onClick={@handleSetRes.bind @, 1280, 720}>1280*720</Button>
                   </Col>
                 </Row>
                 <Row>

@@ -5,6 +5,7 @@ module.exports =
     y: config.get 'poi.window.y', 0
     width: 1100
     height: 700
-    'title-bar-style': 'hidden'
+    enableLargerThanScreen: true
+    titleBarStyle: 'hidden'
   realClose: true
   multiWindow: true
