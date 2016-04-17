@@ -18,6 +18,6 @@ window.language = config.get 'poi.language', navigator.language
 # Custom theme
 require "#{ROOT}/views/env-parts/theme"
 
-
+# Environment
 require 'coffee-react/register'
 require './views'
