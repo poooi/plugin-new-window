@@ -22,10 +22,11 @@ $('#font-awesome')?.setAttribute 'href', require.resolve('font-awesome/css/font-
 confirmExit = false
 exitPlugin = ->
   confirmExit = true
+  window.onbeforeunload = null
   window.close()
 window.onbeforeunload = (e) ->
   if confirmExit
-    return true
+    exitPlugin()
   else
     window.dispatchEvent new Event('close-plugin')
     return false
