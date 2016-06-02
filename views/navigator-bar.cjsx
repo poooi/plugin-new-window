@@ -110,7 +110,7 @@ NavigatorBar = React.createClass
     if @state.navigateUrl.substr(0,7).toLowerCase()!='http://'
       if @state.navigateUrl.substr(0,8).toLowerCase()!='https://'
         @state.navigateUrl = "http://#{@state.navigateUrl}"
-    webview.src = @state.navigateUrl
+    webview.loadURL @state.navigateUrl
   handleBack: ->
     if webview.canGoBack?
       if webview.canGoBack()
@@ -173,7 +173,7 @@ NavigatorBar = React.createClass
     if webview.reload?
       webview.reload()
   onSelectLink: (lnk) ->
-    webview.src = lnk
+    webview.loadURL lnk
   addBookmark: (e) ->
     add = @state.bmadd
     if add.substr(0,7).toLowerCase()!='http://'
