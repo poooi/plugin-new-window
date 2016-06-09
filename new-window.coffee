@@ -21,3 +21,16 @@ require "#{ROOT}/views/env-parts/theme"
 # Environment
 require 'coffee-react/register'
 require './views'
+
+remote.getCurrentWebContents().on 'dom-ready', ->
+  if process.platform == 'darwin'
+    remote.getCurrentWebContents().executeJavaScript """
+      var div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.top = 0;
+      div.style.height = "23px";
+      div.style.width = "100%";
+      div.style["-webkit-app-region"] = "drag";
+      div.style["pointer-events"] = "none";
+      document.body.appendChild(div);
+    """
