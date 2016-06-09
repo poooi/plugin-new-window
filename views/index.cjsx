@@ -15,7 +15,7 @@ window.i18n = new (require 'i18n-2')
 i18n.setLocale(window.language)
 __ = i18n.__.bind(i18n)
 
-NavigatorBar = require './navigator-bar'
+BottomBar = require './bottom-bar'
 
 $('#font-awesome')?.setAttribute 'href', require.resolve('font-awesome/css/font-awesome.css')
 
@@ -53,7 +53,7 @@ WebArea = React.createClass
     <form id="nav-area">
       <div className="form-group" id='navigator-bar'>
         <h5>   </h5>
-        <NavigatorBar />
+        <BottomBar />
       </div>
       <div>
         <Modal show={@state.showModal} onHide={@closeModal}>

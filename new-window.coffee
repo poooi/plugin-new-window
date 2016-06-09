@@ -21,3 +21,4 @@ require "#{ROOT}/views/env-parts/theme"
 # Environment
 require 'coffee-react/register'
 require './views'
+require('babel-register')(require('./babel.config'));
