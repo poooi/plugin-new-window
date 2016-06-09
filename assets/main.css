@@ -58,3 +58,43 @@ button .fa {
   float: right;
   margin: -1px 0 0 0;
 }
+.navigator {
+  display: flex;
+}
+.navigator-url {
+  flex: 1;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+}
+.navigator-url .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+.navigator .navigator-url .navigator-status {
+  padding-right: 28px;
+}
+.navigator .navigator-url .status-icon .fa {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  height: auto;
+  margin: auto;
+  transition: none;
+  width: auto;
+}
+.navigator .navigator-url .status-icon {
+  width: 0;
+  position: relative;
+  left: -22px;
+  padding: 0;
+  background: transparent;
+  margin: auto;
+  border: 0;
+}
+.navigator-btn {
+  width: 60px;
+}
+.navigator-btn button {
+  width: 30px;
+}

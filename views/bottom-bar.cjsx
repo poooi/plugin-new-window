@@ -12,10 +12,10 @@ BottomBar = React.createClass
   render: ->
     <Grid>
       <Row>
-        <Col xs=8>
+        <Col xs=7>
           <NavigatorBar />
         </Col>
-        <Col xs=4>
+        <Col xs=5>
           <ControlBar />
         </Col>
       </Row>
