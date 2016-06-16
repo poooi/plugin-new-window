@@ -87,6 +87,12 @@ class NavigatorBar extends React.Component {
   onRightClickHomepage = (e) => {
     this.navigate(config.get('poi.homepage'))
   }
+  onClickGoBack = (e) => {
+    webview.goBack()
+  }
+  onClickGoForward = (e) => {
+    webview.goForward()
+  }
 
   render() {
     let {url, status} = this.state
@@ -108,6 +114,13 @@ class NavigatorBar extends React.Component {
       navigateIcon   = <FontAwesome name='arrow-right' />
     }
 
+    let canGoBack, canGoForward
+    try {
+        canGoBack = !webview.canGoBack()
+        canGoForward = !webview.canGoForward()
+    } catch (error) {
+    }
+
     return (
       <div className='navigator'>
         <div className='navigator-url'>
@@ -123,6 +136,8 @@ class NavigatorBar extends React.Component {
         </div>
         <div className='navigator-btn'>
           <ButtonGroup>
+            <Button bsSize='small' bsStyle='info' disabled={canGoBack} onClick={this.onClickGoBack}><FontAwesome name='chevron-left' /></Button>
+            <Button bsSize='small' bsStyle='info' disabled={canGoForward} onClick={this.onClickGoForward}><FontAwesome name='chevron-right' /></Button>
             <Button bsSize='small' bsStyle='primary' onClick={navigateAction}>{navigateIcon}</Button>
             <Button bsSize='small' bsStyle='warning' onClick={this.onClickRefresh}><FontAwesome name='refresh' /></Button>
           </ButtonGroup>
