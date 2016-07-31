@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-new-window",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
   "main": "index.cjsx",
   "scripts": {
@@ -25,6 +25,9 @@
     "title": "Built-in browser",
     "description": "Open a new browser window",
     "icon": "fa/sitemap",
-    "priority": 99
+    "priority": 99,
+    "apiVer": {
+      "6.99.99": "2.3.3"
+    }
   }
 }

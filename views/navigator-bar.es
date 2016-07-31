@@ -1,5 +1,6 @@
-const {React, ReactBootstrap, FontAwesome} = window
-const {Button, ButtonGroup, Input, OverlayTrigger, Tooltip} = ReactBootstrap
+import React from 'react'
+import FontAwesome from 'react-fontawesome'
+import { Button, ButtonGroup, FormControl, InputGroup, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 const __ = i18n.__.bind(i18n)
 const __n = i18n.__n.bind(i18n)
@@ -99,10 +100,10 @@ class NavigatorBar extends React.Component {
 
     let statusIcon
     if (status === wvStatus.Loading) {
-      statusIcon = <FontAwesome className="form-control" name='spinner' spin />
+      statusIcon = <FontAwesome name='spinner' spin />
     }
     if (status === wvStatus.Failed) {
-      statusIcon = <FontAwesome className="form-control" name='times' />
+      statusIcon = <FontAwesome name='times' />
     }
 
     let navigateAction, navigateIcon
@@ -124,15 +125,19 @@ class NavigatorBar extends React.Component {
     return (
       <div className='navigator'>
         <div className='navigator-url'>
-          <Input type='text' bsSize='small'
+          <FormGroup>
+            <InputGroup bsSize='small' style={{width: '100%'}}>
+              <FormControl type='text'
                  placeholder={__('Input address')}
                  className={statusIcon? 'navigator-status' : 'navigator-no-status'}
                  value={this.state.url}
                  onChange={this.onChangeUrl}
                  onKeyDown={this.onKeydown} />
-          {statusIcon ? <span className="status-icon input-group-addon">
-                           <div className='navigator-icon'>{statusIcon}</div>
-                        </span> : null}
+              {statusIcon ? <FormControl.Feedback>
+                              {statusIcon}
+                            </FormControl.Feedback> : null}
+            </InputGroup>
+          </FormGroup>
         </div>
         <div className='navigator-btn'>
           <ButtonGroup>
