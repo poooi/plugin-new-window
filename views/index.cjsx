@@ -15,6 +15,8 @@ window.i18n = new (require 'i18n-2')
 i18n.setLocale(window.language)
 __ = i18n.__.bind(i18n)
 
+document.title = __ 'Built-in browser'
+
 BottomBar = require './bottom-bar'
 
 $('#font-awesome')?.setAttribute 'href', require.resolve('font-awesome/css/font-awesome.css')
