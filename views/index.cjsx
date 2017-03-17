@@ -46,6 +46,11 @@ WebArea = React.createClass
     remote.getCurrentWindow().webContents.on 'dom-ready', ->
       window.dispatchEvent new Event 'resize'
       remote.getCurrentWindow().reloadArea = 'inner-page webview'
+      useragent = if process.platform == 'darwin'
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+      else
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+      $('webview').setUserAgent(useragent)
     window.addEventListener 'close-plugin', @openModal
   componentWillUnmount: ->
     window.removeEventListener 'close-plugin', @openModal
