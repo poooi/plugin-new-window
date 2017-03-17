@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-new-window",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
   "main": "index.cjsx",
   "scripts": {
@@ -19,8 +19,7 @@
     "url": "https://github.com/poooi/plugin-new-window/issues"
   },
   "homepage": "https://github.com/poooi/plugin-new-window#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "poiPlugin": {
     "title": "Built-in browser",
     "description": "Open a new browser window",
