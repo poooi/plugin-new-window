@@ -4,6 +4,7 @@
 body {
   font-size: 13px;
   overflow:hidden;
+  zoom: 1 !important;
 }
 .form-group {
   margin-bottom: 0px;
