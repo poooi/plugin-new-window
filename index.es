@@ -8,7 +8,7 @@ export default {
     height: 700,
     enableLargerThanScreen: true,
     titleBarStyle: 'hidden',
-  }
+  },
   realClose: true,
   multiWindow: true,
 }
