@@ -1,8 +1,8 @@
 {
   "name": "poi-plugin-new-window",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
-  "main": "index.cjsx",
+  "main": "index.es",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
