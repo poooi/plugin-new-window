@@ -2,6 +2,7 @@ import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import { Button, ButtonGroup, FormControl, InputGroup, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
+const { i18n } = window
 const __ = i18n.__.bind(i18n)
 const __n = i18n.__n.bind(i18n)
 const webview = $('webview')
