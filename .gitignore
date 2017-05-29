@@ -1,1 +1,4 @@
 node_modules/
+*.js
+!webview-preload.js
+!env-loader.js
