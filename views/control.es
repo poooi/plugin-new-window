@@ -39,8 +39,11 @@ class ControlBar extends React.Component {
     bookmarks: customBookmarks,
   }
   handleResize = (e) =>{
-    $('inner-page').style.height = `${window.innerHeight - 50}px`
-    $('inner-page webview').style.height = $('inner-page webview').shadowRoot.querySelector('object[is=browserplugin]').style.height = `${window.innerHeight - 50}px`
+    const h = window.innerHeight - 50
+    const factor = config.get('poi.zoomLevel', 1)
+    $('inner-page').style.height = $('inner-page webview').shadowRoot.querySelector('object[is=browserplugin]').style.height = `${h}px`
+    $('inner-page webview').style.width = `${Math.max(100, parseInt(100 * factor))}%`
+    $('inner-page webview').style.height = `${parseInt(h * factor)}px`
   }
   handleSetRes = (width, height) => {
     let nowWindow = remote.getCurrentWindow()

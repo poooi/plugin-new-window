@@ -6,6 +6,10 @@ body {
   overflow:hidden;
   zoom: 1 !important;
 }
+control-area {
+  position: absolute;
+  bottom: 0;
+}
 .form-group {
   margin-bottom: 0px;
 }
