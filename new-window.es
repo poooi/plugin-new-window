@@ -34,9 +34,9 @@ remote.getCurrentWebContents().on('dom-ready', e => {
       document.body.appendChild(div);
     `)
   }
-  $('kan-game webview').addEventListener('dom-ready', (e) => {
+  $('webview').addEventListener('dom-ready', (e) => {
     if (config.get('poi.enableDMMcookie', false)) {
-      $('kan-game webview').executeJavaScript(`
+      $('webview').executeJavaScript(`
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/";
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame/";
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame_s/";
@@ -48,11 +48,11 @@ remote.getCurrentWebContents().on('dom-ready', e => {
         document.cookie = "ckcy=1;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame/";
         document.cookie = "ckcy=1;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame_s/";
       `)
-      const ua = $('kan-game webview').getWebContents().session.getUserAgent()
-      $('kan-game webview').getWebContents().session.setUserAgent(ua, 'ja-JP')
+      const ua = $('webview').getWebContents().session.getUserAgent()
+      $('webview').getWebContents().session.setUserAgent(ua, 'ja-JP')
     }
   })
-  $('kan-game webview').addEventListener('new-window', (e) => {
+  $('webview').addEventListener('new-window', (e) => {
     const exWindow = WindowManager.createWindow({
       realClose: true,
       navigatable: true,
