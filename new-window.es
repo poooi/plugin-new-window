@@ -3,6 +3,7 @@ const path = require('path')
 
 window.$ = (param) => document.querySelector(param)
 window.$$ = (param) => document.querySelectorAll(param)
+window.ROOT = remote.getGlobal('ROOT')
 
 const config = window.config = remote.require('./lib/config')
 
