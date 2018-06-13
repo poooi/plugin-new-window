@@ -1,10 +1,9 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
-import { Button, ButtonGroup, FormControl, InputGroup, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button, ButtonGroup, FormControl, InputGroup, FormGroup } from 'react-bootstrap'
 
 const { i18n } = window
 const __ = i18n.__.bind(i18n)
-const __n = i18n.__n.bind(i18n)
 const webview = $('webview')
 const wvStatus = {
   Loading: 0,
@@ -33,18 +32,18 @@ class NavigatorBar extends React.Component {
     webview.removeEventListener('will-navigate', this.onWillNavigate)
   }
   // Webview Event
-  onStartLoading = (e) => {
+  onStartLoading = () => {
     this.setState({
       status: wvStatus.Loading,
     })
   }
-  onStopLoading = (e) => {
+  onStopLoading = () => {
     this.setState({
       status: wvStatus.Loaded,
       url: webview.getURL(),
     })
   }
-  onFailLoad = (e) => {
+  onFailLoad = () => {
     this.setState({
       status: wvStatus.Failed,
     })
@@ -74,30 +73,30 @@ class NavigatorBar extends React.Component {
       this.navigate(this.state.url)
     }
   }
-  onClickNavigate = (e) => {
+  onClickNavigate = () => {
     this.navigate(this.state.url)
   }
-  onClickStop = (e) => {
+  onClickStop = () => {
     webview.stop()
   }
-  onClickRefresh = (e) => {
+  onClickRefresh = () => {
     webview.reload()
   }
-  onClickHomepage = (e) => {
+  onClickHomepage = () => {
     config.set('poi.homepage', this.state.url)
   }
-  onRightClickHomepage = (e) => {
+  onRightClickHomepage = () => {
     this.navigate(config.get('poi.homepage'))
   }
-  onClickGoBack = (e) => {
+  onClickGoBack = () => {
     webview.goBack()
   }
-  onClickGoForward = (e) => {
+  onClickGoForward = () => {
     webview.goForward()
   }
 
   render() {
-    let {url, status} = this.state
+    let { status } = this.state
 
     let statusIcon
     if (status === wvStatus.Loading) {
@@ -118,9 +117,10 @@ class NavigatorBar extends React.Component {
 
     let canGoBack, canGoForward
     try {
-        canGoBack = !webview.canGoBack()
-        canGoForward = !webview.canGoForward()
+      canGoBack = !webview.canGoBack()
+      canGoForward = !webview.canGoForward()
     } catch (error) {
+      // do nothing
     }
 
     return (

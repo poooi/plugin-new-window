@@ -3,13 +3,12 @@ import fs from 'fs-extra'
 import FontAwesome from 'react-fontawesome'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Grid, Col, Button, ButtonGroup, InputGroup, FormGroup, FormControl, ControlLabel, Modal, Alert, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip, Overlay } from 'react-bootstrap'
+import { Col, Button, ButtonGroup, InputGroup, FormGroup, FormControl, ControlLabel, OverlayTrigger, DropdownButton, MenuItem, Popover, Row, Tooltip, Overlay } from 'react-bootstrap'
 import { remote } from 'electron'
 
-const {$, $$, i18n, ROOT, APPDATA_PATH} = window
+const {$, i18n, APPDATA_PATH} = window
 const __ = i18n.__.bind(i18n)
 const webview = $('inner-page webview')
-const innerpage = $('inner-page')
 
 let defaultBookmark = path.join(__dirname, "..", "bookmark.json")
 fs.ensureFileSync(defaultBookmark)
@@ -22,7 +21,7 @@ try {
   fs.ensureFileSync(customBookmark)
   customBookmarks = fs.readJsonSync(customBookmark)
 }catch (e) {
-  console.log(`Read bookmark error! ${e}`)
+  console.error(`Read bookmark error! ${e}`)
 }
 
 class ControlBar extends React.Component {
@@ -38,7 +37,11 @@ class ControlBar extends React.Component {
     delShow: false,
     bookmarks: customBookmarks,
   }
-  handleResize = (e) =>{
+
+  resPop = React.createRef()
+  addPop = React.createRef()
+
+  handleResize = () =>{
     const h = window.innerHeight - 50
     const factor = config.get('poi.zoomLevel', 1)
     $('inner-page').style.height = $('inner-page webview').shadowRoot.querySelector('object[is=browserplugin]').style.height = `${h}px`
@@ -98,7 +101,7 @@ class ControlBar extends React.Component {
       muted: !this.state.muted,
     })
   }
-  addBookmark = (e) => {
+  addBookmark = () => {
     let add = this.state.bmadd
     if (!add.includes('http://') || !add.includes('https://')) {
       add = `http://${add}`
@@ -115,7 +118,7 @@ class ControlBar extends React.Component {
       addShow: false,
     })
   }
-  delBookmark = (e) => {
+  delBookmark = () => {
     let bookmarks = this.state.bookmarks
     bookmarks.splice(this.state.todel, 1)
     fs.writeJsonSync(customBookmark, bookmarks)
@@ -125,7 +128,6 @@ class ControlBar extends React.Component {
     })
   }
   handleResPopShow = () => {
-    console.log(this.refs)
     this.setState({
       resShow: !this.state.resShow,
     })
@@ -201,7 +203,7 @@ class ControlBar extends React.Component {
           <OverlayTrigger placement='top' overlay={<Tooltip id='btn-adj'>{__("Auto adjust")}</Tooltip>}>
             <Button bsSize='small' onClick={this.handleJustify} onContextMenu={this.handleUnlockWebview}><FontAwesome name='arrows-alt' /></Button>
           </OverlayTrigger>
-          <Overlay show={this.state.resShow} onHide={this.handleResPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.refs.resPop)} placement='top'>
+          <Overlay show={this.state.resShow} onHide={this.handleResPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.resPop.current)} placement='top'>
             <Popover id='pop-res' title={__("Change resolution")}>
               <FormGroup>
                 <Row>
@@ -252,7 +254,7 @@ class ControlBar extends React.Component {
             </Popover>
           </Overlay>
           <OverlayTrigger placement='top' overlay={<Tooltip id='btn-res'>{__("Change resolution")}</Tooltip>}>
-            <Button id='res-btn' bsStyle='default' bsSize='small' ref='resPop' style={{marginLeft: 0}} onClick={this.handleResPopShow}>
+            <Button id='res-btn' bsStyle='default' bsSize='small' ref={this.resPop} style={{marginLeft: 0}} onClick={this.handleResPopShow}>
               <FontAwesome name='arrows'/>
             </Button>
           </OverlayTrigger>
@@ -261,7 +263,7 @@ class ControlBar extends React.Component {
           <Button bsSize='small' className="btn-grp" onContextMenu={this.handleDebug} onClick={this.handleDevTools}><FontAwesome name='gears' /></Button>
         </OverlayTrigger>
         <OverlayTrigger placement='top' overlay={<Tooltip id='btn-lnk'>{__("Links")}</Tooltip>}>
-          <DropdownButton id='btn-bkm' bsSize='small' className="btn-grp" ref='addPop' title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
+          <DropdownButton id='btn-bkm' bsSize='small' className="btn-grp" ref={this.addPop} title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
           {
             defaultBookmarks.map((bookmark, j) => (
               <MenuItem key={1000 + j} eventKey={1000 + j} onSelect={this.onSelectLink.bind(this, bookmark.link)}>{bookmark.name}</MenuItem>
@@ -281,7 +283,7 @@ class ControlBar extends React.Component {
             <MenuItem key={2000} eventKey={2000} onSelect={this.handleAddPopShow}>{__('Add bookmark')}</MenuItem>
           </DropdownButton>
         </OverlayTrigger>
-        <Overlay show={this.state.addShow} onHide={this.handleAddPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.refs.addPop)} placement='top'>
+        <Overlay show={this.state.addShow} onHide={this.handleAddPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.addPop.current)} placement='top'>
           <Popover style={{width: 400}} id='pop-add' title={__("Add bookmark")}>
             <Col xs={6}>
               <InputGroup bsSize='small'>
@@ -300,7 +302,7 @@ class ControlBar extends React.Component {
             </Col>
           </Popover>
         </Overlay>
-        <Overlay show={this.state.delShow} onHide={this.handleDelPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.refs.addPop)} placement='top'>
+        <Overlay show={this.state.delShow} onHide={this.handleDelPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.addPop.current)} placement='top'>
           <Popover id='pop-del' title={__("Del bookmark")}>
             <Col xs={6}>
               <Button className='add-btn' onClick={this.handleDelPopShow}>{__('Cancel')}</Button>

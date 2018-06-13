@@ -18,11 +18,11 @@ window.i18n = new (require('i18n-2'))({
 })
 window.i18n.setLocale(window.language)
 
-require(`${ROOT}/views/env-parts/theme`)
+require(`${window.ROOT}/views/env-parts/theme`)
 
 require('./views')
 
-remote.getCurrentWebContents().on('dom-ready', e => {
+remote.getCurrentWebContents().on('dom-ready', () => {
   if (process.platform === 'darwin') {
     remote.getCurrentWebContents().executeJavaScript(`
       var div = document.createElement("div");
@@ -35,7 +35,7 @@ remote.getCurrentWebContents().on('dom-ready', e => {
       document.body.appendChild(div);
     `)
   }
-  $('webview').addEventListener('dom-ready', (e) => {
+  $('webview').addEventListener('dom-ready', () => {
     if (config.get('poi.enableDMMcookie', false)) {
       $('webview').executeJavaScript(`
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/";

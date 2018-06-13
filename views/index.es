@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Button, Modal } from 'react-bootstrap'
-import FontAwesome from 'react-fontawesome'
 import { remote } from 'electron'
-import path from 'path-extra'
-import fs from "fs-extra"
-import Divider from './divider'
 import BottomBar from './bottom-bar'
 
 const __ = window.i18n.__.bind(window.i18n)
@@ -21,7 +17,7 @@ let exitPlugin = () => {
   window.onbeforeunload = null
   window.close()
 }
-window.onbeforeunload = (e) => {
+window.onbeforeunload = () => {
   if (confirmExit) {
     exitPlugin()
   } else {
@@ -35,7 +31,7 @@ class WebArea extends Component {
   closeModal = () => this.setState({ showModal: false })
   openModal = () => this.setState({ showModal: true })
   componentDidMount = () => {
-    remote.getCurrentWindow().webContents.on('dom-ready', e => {
+    remote.getCurrentWindow().webContents.on('dom-ready', () => {
       window.dispatchEvent(new Event('resize'))
       remote.getCurrentWindow().reloadArea = 'inner-page webview'
       const useragent = process.platform == 'darwin' ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
