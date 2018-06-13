@@ -1,9 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
 import { Button, ButtonGroup, FormControl, InputGroup, FormGroup } from 'react-bootstrap'
+import { translate } from 'react-i18next'
 
-const { i18n } = window
-const __ = i18n.__.bind(i18n)
 const webview = $('webview')
 const wvStatus = {
   Loading: 0,
@@ -11,7 +11,11 @@ const wvStatus = {
   Failed: 2,
 }
 
+@translate('poi-plugin-new-window')
 class NavigatorBar extends React.Component {
+  static propTypes = {
+    t: PropTypes.func.isRequired,
+  }
   constructor() {
     super()
     this.state = {
@@ -96,7 +100,8 @@ class NavigatorBar extends React.Component {
   }
 
   render() {
-    let { status } = this.state
+    const { t } = this.props
+    const { status } = this.state
 
     let statusIcon
     if (status === wvStatus.Loading) {
@@ -129,7 +134,7 @@ class NavigatorBar extends React.Component {
           <FormGroup>
             <InputGroup bsSize='small' style={{width: '100%'}}>
               <FormControl type='text'
-                 placeholder={__('Input address')}
+                 placeholder={t('Input address')}
                  className={statusIcon? 'navigator-status' : 'navigator-no-status'}
                  value={this.state.url}
                  onChange={this.onChangeUrl}

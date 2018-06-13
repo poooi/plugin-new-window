@@ -1,13 +1,55 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
+import glob from 'glob'
+import path from 'path'
+import fs from 'fs-extra'
+import { each, set } from 'lodash'
 import { Button, Modal } from 'react-bootstrap'
 import { remote } from 'electron'
+import I18next from 'i18next'
+import { I18nextProvider, translate, reactI18nextModule } from 'react-i18next'
 import BottomBar from './bottom-bar'
 
-const __ = window.i18n.__.bind(window.i18n)
 const { $ } = window
-document.title = __('Built-in browser')
+window.language = config.get('poi.language', navigator.language)
 
+const i18n = I18next.createInstance()
+
+const i18nFiles = glob.sync(path.resolve(__dirname, '../i18n/*.json'))
+
+const pluginResources = {}
+each(i18nFiles, f => {
+  try {
+    const data = fs.readJSONSync(f)
+    const lng = path.basename(f, path.extname(f))
+    set(pluginResources, [lng, 'poi-plugin-new-window'], data)
+  } catch (e) {
+    console.error(e)
+  }
+})
+
+
+window.i18next = i18n
+
+i18n.use(reactI18nextModule)
+  .init({
+    lng: window.language,
+    fallbackLng: false,
+    resources: pluginResources,
+    ns: ['poi-plugin-new-window'],
+    defaultNS: 'poi-plugin-new-window',
+    interpolation: {
+      escapeValue: false,
+    },
+    returnObjects: true, // allow returning objects
+    react: {
+      wait: false,
+      nsMode: 'fallback',
+    },
+  })
+
+window.i18n = i18n
 
 $('#font-awesome').setAttribute('href', require.resolve('font-awesome/css/font-awesome.css'))
 
@@ -26,8 +68,18 @@ window.onbeforeunload = () => {
   }
 }
 
+@translate('poi-plugin-new-window')
 class WebArea extends Component {
+  static propTypes = {
+    t: PropTypes.func.isRequired,
+  }
+
   state = { showModal: false }
+
+  componentDidMount() {
+    document.title = this.props.t('Built-in browser')
+  }
+
   closeModal = () => this.setState({ showModal: false })
   openModal = () => this.setState({ showModal: true })
   componentDidMount = () => {
@@ -44,6 +96,7 @@ class WebArea extends Component {
     window.removeEventListener('close-plugin', this.openModal)
   }
   render() {
+    const { t } = this.props
     return (
       <form id="nav-area">
         <div className="form-group" id='navigator-bar'>
@@ -53,14 +106,14 @@ class WebArea extends Component {
         <div>
           <Modal show={this.state.showModal} onHide={this.closeModal}>
             <Modal.Header closeButton>
-              <Modal.Title>{__("Exit")}</Modal.Title>
+              <Modal.Title>{t("Exit")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {__("Confirm?")}
+              {t("Confirm?")}
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={this.closeModal}>{__("Cancel")}</Button>
-              <Button onClick={exitPlugin} bsStyle="warning">{__("Exit")}</Button>
+              <Button onClick={this.closeModal}>{t("Cancel")}</Button>
+              <Button onClick={exitPlugin} bsStyle="warning">{t("Exit")}</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -69,4 +122,4 @@ class WebArea extends Component {
   }
 }
 
-ReactDOM.render(<WebArea />, $('web-area'))
+ReactDOM.render(<I18nextProvider i18n={i18n}><WebArea /></I18nextProvider>, $('web-area'))

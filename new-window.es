@@ -1,22 +1,11 @@
 const { remote } = require('electron')
-const path = require('path')
 
 window.$ = (param) => document.querySelector(param)
 window.$$ = (param) => document.querySelectorAll(param)
 window.ROOT = remote.getGlobal('ROOT')
+require('module').globalPaths.push(window.ROOT)
 
 const config = window.config = remote.require('./lib/config')
-
-window.language = config.get('poi.language', navigator.language)
-window.i18n = new (require('i18n-2'))({
-  locales: ['en-US', 'ja-JP', 'zh-CN', 'zh-TW'],
-  directory: path.join(__dirname, 'i18n'),
-  updateFiles: false,
-  indent: "\t",
-  extension: '.json',
-  devMode: false,
-})
-window.i18n.setLocale(window.language)
 
 require(`${window.ROOT}/views/env-parts/theme`)
 
