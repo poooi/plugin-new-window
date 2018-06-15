@@ -4,6 +4,9 @@
   "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
   "main": "index.es",
   "scripts": {
+    "reset": "git clean -f && git checkout . && git submodule foreach git checkout . && git submodule foreach git clean -f",
+    "prepack": "poi-util-transpile --sm --replace",
+    "postpublish": "npm run reset",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,7 +29,8 @@
     "icon": "fa/sitemap",
     "priority": 99,
     "apiVer": {
-      "6.99.99": "2.3.3"
+      "6.99.99": "2.3.3",
+      "8.1.99": "2.11.0"
     }
   },
   "devDependencies": {
@@ -34,6 +38,7 @@
     "eslint": "^4.19.1",
     "eslint-config-poi-plugin": "^1.0.0",
     "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-react": "^7.9.1"
+    "eslint-plugin-react": "^7.9.1",
+    "poi-util-transpile": "^8.2.2"
   }
 }
