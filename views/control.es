@@ -216,7 +216,7 @@ class ControlBar extends React.Component {
   render() {
     const { t } = this.props
     return (
-      <div>
+      <div className="control-bar">
         <ButtonGroup className="btn-grp">
           <OverlayTrigger placement='top' overlay={<Tooltip id='btn-mut'>{this.state.muted ?  t('Volume off') : t('Volume on')}</Tooltip>}>
             <Button bsSize='small' onClick={this.handleSetMuted}><FontAwesome name={this.state.muted ? 'volume-off' : 'volume-up'} /></Button>

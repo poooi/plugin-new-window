@@ -95,26 +95,25 @@ class WebArea extends Component {
   render() {
     const { t } = this.props
     return (
-      <form id="nav-area">
-        <div className="form-group" id='navigator-bar'>
-          <h5>   </h5>
-          <BottomBar />
-        </div>
-        <div>
-          <Modal show={this.state.showModal} onHide={this.closeModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>{t("Exit")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {t("Confirm?")}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={this.closeModal}>{t("Cancel")}</Button>
-              <Button onClick={exitPlugin} bsStyle="warning">{t("Exit")}</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </form>
+      <>
+        <form id="nav-area">
+          <div className="form-group" id='navigator-bar'>
+            <BottomBar />
+          </div>
+        </form>
+        <Modal show={this.state.showModal} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{t("Exit")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {t("Confirm?")}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closeModal}>{t("Cancel")}</Button>
+            <Button onClick={exitPlugin} bsStyle="warning">{t("Exit")}</Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     )
   }
 }

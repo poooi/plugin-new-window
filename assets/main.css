@@ -9,9 +9,14 @@ body {
 control-area {
   position: absolute;
   bottom: 0;
+  width: 100%;
 }
-.form-group {
+.form-group.form-group {
   margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
 }
 .vertical-center {
   display: flex;
@@ -65,6 +70,8 @@ button .fa {
 }
 .navigator {
   display: flex;
+  flex-grow: 1;
+  align-items: center;
 }
 .navigator-url {
   flex: 1;
@@ -81,4 +88,13 @@ button .fa {
 }
 .navigator-btn button {
   width: 30px;
+}
+.bottom-bar {
+  display: flex;
+  flex:1;
+}
+.control-bar {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
 }
