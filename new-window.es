@@ -3,6 +3,7 @@ const { remote } = require('electron')
 window.$ = (param) => document.querySelector(param)
 window.$$ = (param) => document.querySelectorAll(param)
 window.ROOT = remote.getGlobal('ROOT')
+window.APPDATA_PATH = remote.getGlobal('APPDATA_PATH')
 require('module').globalPaths.push(window.ROOT)
 
 const config = window.config = remote.require('./lib/config')

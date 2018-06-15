@@ -11,19 +11,8 @@ import PropTypes from 'prop-types'
 const {$, APPDATA_PATH} = window
 const webview = $('inner-page webview')
 
-let defaultBookmark = path.join(__dirname, "..", "bookmark.json")
-fs.ensureFileSync(defaultBookmark)
-let defaultBookmarks = fs.readJsonSync(defaultBookmark)
-let customBookmarks = []
-let customBookmark = ''
-try {
-  fs.ensureDirSync(path.join(APPDATA_PATH, 'new-window'))
-  customBookmark = path.join(APPDATA_PATH, 'new-window', 'bookmark.json')
-  fs.ensureFileSync(customBookmark)
-  customBookmarks = fs.readJsonSync(customBookmark)
-}catch (e) {
-  console.error(`Read bookmark error! ${e}`)
-}
+const DEFAULT_BOOKMARK_PATH = path.resolve(__dirname, '../bookmark.json')
+const CUSTOM_BOOKMARK_PATH = path.join(APPDATA_PATH, 'new-window', 'bookmark.json')
 
 @translate('poi-plugin-new-window')
 class ControlBar extends React.Component {
@@ -41,11 +30,38 @@ class ControlBar extends React.Component {
     resShow: false,
     addShow: false,
     delShow: false,
-    bookmarks: customBookmarks,
+    bookmarks: [],
+    defaultBookmarks: []
   }
 
   resPop = React.createRef()
   addPop = React.createRef()
+
+  async componentDidMount() {
+    window.addEventListener('resize', this.handleResize)
+    let defaultBookmarks = []
+    let customBookmarks = []
+
+    try {
+      defaultBookmarks = await fs.readJson(DEFAULT_BOOKMARK_PATH)
+    } catch (e) {
+      console.error(e)
+    }
+
+    try {
+      await fs.ensureDir(path.dirname(CUSTOM_BOOKMARK_PATH))
+      await fs.ensureFile(CUSTOM_BOOKMARK_PATH)
+
+      customBookmarks = await fs.readJson(CUSTOM_BOOKMARK_PATH)
+    } catch (e) {
+      console.error(e)
+    }
+
+    this.setState({
+      defaultBookmarks,
+      bookmarks: customBookmarks,
+    })
+  }
 
   handleResize = () =>{
     const h = window.innerHeight - 50
@@ -107,7 +123,7 @@ class ControlBar extends React.Component {
       muted: !this.state.muted,
     })
   }
-  addBookmark = () => {
+  addBookmark = async () => {
     let add = this.state.bmadd
     if (!add.includes('http://') || !add.includes('https://')) {
       add = `http://${add}`
@@ -116,18 +132,18 @@ class ControlBar extends React.Component {
       name: this.state.bmname,
       link: add,
     }
-    let bookmarks = this.state.bookmarks
+    let bookmarks = this.state.bookmarks.slice()
     bookmarks.push(bookmark)
-    fs.writeJsonSync(customBookmark, bookmarks)
+    await fs.writeJson(CUSTOM_BOOKMARK_PATH, bookmarks)
     this.setState({
-      bookmarks: bookmarks,
+      bookmarks,
       addShow: false,
     })
   }
-  delBookmark = () => {
-    let bookmarks = this.state.bookmarks
+  delBookmark = async () => {
+    let bookmarks = this.state.bookmarks.slice()
     bookmarks.splice(this.state.todel, 1)
-    fs.writeJsonSync(customBookmark, bookmarks)
+    await fs.writeJson(CUSTOM_BOOKMARK_PATH, bookmarks)
     this.setState({
       bookmarks: bookmarks,
       delShow: false,
@@ -141,6 +157,7 @@ class ControlBar extends React.Component {
   handleAddPopShow = () => {
     this.setState({
       addShow: !this.state.addShow,
+      bmadd: webview?.getURL() || '',
     })
   }
   handleDelPopShow = () => {
@@ -192,9 +209,6 @@ class ControlBar extends React.Component {
   }
   handleSetWebviewRatio = (e) => {
     webview.executeJavaScript(`window.setZoom(${e.target.value})`)
-  }
-  componentDidMount = () => {
-    window.addEventListener('resize', this.handleResize)
   }
   componentWillUmount = () =>{
     window.removeEventListener('resize', this.handleResize)
@@ -272,7 +286,7 @@ class ControlBar extends React.Component {
         <OverlayTrigger placement='top' overlay={<Tooltip id='btn-lnk'>{t("Links")}</Tooltip>}>
           <DropdownButton id='btn-bkm' bsSize='small' className="btn-grp" ref={this.addPop} title = {<FontAwesome name='bookmark-o' />} dropup pullRight noCaret>
           {
-            defaultBookmarks.map((bookmark, j) => (
+            this.state.defaultBookmarks.map((bookmark, j) => (
               <MenuItem key={1000 + j} eventKey={1000 + j} onSelect={this.onSelectLink.bind(this, bookmark.link)}>{bookmark.name}</MenuItem>
             ))
           }
@@ -292,21 +306,21 @@ class ControlBar extends React.Component {
         </OverlayTrigger>
         <Overlay show={this.state.addShow} onHide={this.handleAddPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.addPop.current)} placement='top'>
           <Popover style={{width: 400}} id='pop-add' title={t("Add bookmark")}>
-            <Col xs={6}>
+            <Row>
               <InputGroup bsSize='small'>
                 <ControlLabel>{t('Name')}</ControlLabel>
                 <FormControl type='text' value={this.state.bmname} onChange={this.handleSetBMName} />
               </InputGroup>
-            </Col>
-            <Col xs={6}>
+            </Row>
+            <Row>
               <InputGroup bsSize='small'>
                 <ControlLabel>{t('Address')}</ControlLabel>
                 <FormControl type='text' value={this.state.bmadd} onChange={this.handleSetBMAdd} />
               </InputGroup>
-            </Col>
-            <Col xs={12}>
+            </Row>
+            <Row>
               <Button className='add-btn' onClick={this.addBookmark}>{t('Confirm')}</Button>
-            </Col>
+            </Row>
           </Popover>
         </Overlay>
         <Overlay show={this.state.delShow} onHide={this.handleDelPopShow} rootClose={true} target={() => ReactDOM.findDOMNode(this.addPop.current)} placement='top'>

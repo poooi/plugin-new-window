@@ -76,13 +76,10 @@ class WebArea extends Component {
 
   state = { showModal: false }
 
-  componentDidMount() {
-    document.title = this.props.t('Built-in browser')
-  }
-
   closeModal = () => this.setState({ showModal: false })
   openModal = () => this.setState({ showModal: true })
   componentDidMount = () => {
+    document.title = this.props.t('Built-in browser')
     remote.getCurrentWindow().webContents.on('dom-ready', () => {
       window.dispatchEvent(new Event('resize'))
       remote.getCurrentWindow().reloadArea = 'inner-page webview'
