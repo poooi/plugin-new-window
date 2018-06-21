@@ -1,10 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
-import { Button, ButtonGroup, FormControl, InputGroup, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button, ButtonGroup, FormControl, InputGroup, FormGroup } from 'react-bootstrap'
+import { translate } from 'react-i18next'
 
-const { i18n } = window
-const __ = i18n.__.bind(i18n)
-const __n = i18n.__n.bind(i18n)
 const webview = $('webview')
 const wvStatus = {
   Loading: 0,
@@ -12,7 +11,11 @@ const wvStatus = {
   Failed: 2,
 }
 
+@translate('poi-plugin-new-window')
 class NavigatorBar extends React.Component {
+  static propTypes = {
+    t: PropTypes.func.isRequired,
+  }
   constructor() {
     super()
     this.state = {
@@ -33,18 +36,18 @@ class NavigatorBar extends React.Component {
     webview.removeEventListener('will-navigate', this.onWillNavigate)
   }
   // Webview Event
-  onStartLoading = (e) => {
+  onStartLoading = () => {
     this.setState({
       status: wvStatus.Loading,
     })
   }
-  onStopLoading = (e) => {
+  onStopLoading = () => {
     this.setState({
       status: wvStatus.Loaded,
       url: webview.getURL(),
     })
   }
-  onFailLoad = (e) => {
+  onFailLoad = () => {
     this.setState({
       status: wvStatus.Failed,
     })
@@ -74,30 +77,31 @@ class NavigatorBar extends React.Component {
       this.navigate(this.state.url)
     }
   }
-  onClickNavigate = (e) => {
+  onClickNavigate = () => {
     this.navigate(this.state.url)
   }
-  onClickStop = (e) => {
+  onClickStop = () => {
     webview.stop()
   }
-  onClickRefresh = (e) => {
+  onClickRefresh = () => {
     webview.reload()
   }
-  onClickHomepage = (e) => {
+  onClickHomepage = () => {
     config.set('poi.homepage', this.state.url)
   }
-  onRightClickHomepage = (e) => {
+  onRightClickHomepage = () => {
     this.navigate(config.get('poi.homepage'))
   }
-  onClickGoBack = (e) => {
+  onClickGoBack = () => {
     webview.goBack()
   }
-  onClickGoForward = (e) => {
+  onClickGoForward = () => {
     webview.goForward()
   }
 
   render() {
-    let {url, status} = this.state
+    const { t } = this.props
+    const { status } = this.state
 
     let statusIcon
     if (status === wvStatus.Loading) {
@@ -118,9 +122,10 @@ class NavigatorBar extends React.Component {
 
     let canGoBack, canGoForward
     try {
-        canGoBack = !webview.canGoBack()
-        canGoForward = !webview.canGoForward()
+      canGoBack = !webview.canGoBack()
+      canGoForward = !webview.canGoForward()
     } catch (error) {
+      // do nothing
     }
 
     return (
@@ -129,7 +134,7 @@ class NavigatorBar extends React.Component {
           <FormGroup>
             <InputGroup bsSize='small' style={{width: '100%'}}>
               <FormControl type='text'
-                 placeholder={__('Input address')}
+                 placeholder={t('Input address')}
                  className={statusIcon? 'navigator-status' : 'navigator-no-status'}
                  value={this.state.url}
                  onChange={this.onChangeUrl}
