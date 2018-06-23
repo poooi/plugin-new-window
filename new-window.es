@@ -12,6 +12,9 @@ require(`${window.ROOT}/views/env-parts/theme`)
 
 require('./views')
 
+const WindowManager = remote.require('./lib/window')
+window.WindowManager = WindowManager
+
 remote.getCurrentWebContents().on('dom-ready', () => {
   if (process.platform === 'darwin') {
     remote.getCurrentWebContents().executeJavaScript(`
