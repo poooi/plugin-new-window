@@ -125,7 +125,7 @@ class ControlBar extends React.Component {
   }
   addBookmark = async () => {
     let add = this.state.bmadd
-    if (!add.includes('http://') || !add.includes('https://')) {
+    if (!add.startsWith('http://') && !add.startsWith('https://')) {
       add = `http://${add}`
     }
     let bookmark = {
