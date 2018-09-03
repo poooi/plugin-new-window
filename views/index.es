@@ -86,7 +86,6 @@ class WebArea extends Component {
     remote.getCurrentWindow().webContents.on('dom-ready', () => {
       window.dispatchEvent(new Event('resize'))
       remote.getCurrentWindow().reloadArea = 'inner-page webview'
-      $('webview').setUserAgent(this.useragent, 'ja-JP')
     })
     window.addEventListener('close-plugin', this.openModal)
   }
