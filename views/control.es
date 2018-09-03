@@ -38,7 +38,6 @@ class ControlBar extends React.Component {
   addPop = React.createRef()
 
   async componentDidMount() {
-    window.addEventListener('resize', this.handleResize)
     let defaultBookmarks = []
     let customBookmarks = []
 
@@ -61,14 +60,6 @@ class ControlBar extends React.Component {
       defaultBookmarks,
       bookmarks: customBookmarks,
     })
-  }
-
-  handleResize = () =>{
-    const h = window.innerHeight - 50
-    const factor = config.get('poi.zoomLevel', 1)
-    $('inner-page').style.height = $('inner-page webview').shadowRoot.querySelector('object[is=browserplugin]').style.height = `${h}px`
-    $('inner-page webview').style.width = `${Math.max(100, parseInt(100 * factor))}%`
-    $('inner-page webview').style.height = `${parseInt(h * factor)}px`
   }
   handleSetRes = (width, height) => {
     let nowWindow = remote.getCurrentWindow()
@@ -209,9 +200,6 @@ class ControlBar extends React.Component {
   }
   handleSetWebviewRatio = (e) => {
     webview.executeJavaScript(`window.setZoom(${e.target.value})`)
-  }
-  componentWillUmount = () =>{
-    window.removeEventListener('resize', this.handleResize)
   }
   render() {
     const { t } = this.props

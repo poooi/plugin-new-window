@@ -98,3 +98,7 @@ button .fa {
   display: flex;
   align-items: center;
 }
+inner-page webview {
+  width: 100vw;
+  height: calc(100vh - 50px);
+}
