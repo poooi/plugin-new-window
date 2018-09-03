@@ -4,7 +4,6 @@ import FontAwesome from 'react-fontawesome'
 import { Button, ButtonGroup, FormControl, InputGroup, FormGroup } from 'react-bootstrap'
 import { translate } from 'react-i18next'
 
-const webview = $('webview')
 const wvStatus = {
   Loading: 0,
   Loaded: 1,
@@ -24,12 +23,15 @@ class NavigatorBar extends React.Component {
     }
   }
   componentDidMount() {
+    const webview = $('webview')
+    this.webview = webview
     webview.addEventListener('did-start-loading', this.onStartLoading)
     webview.addEventListener('did-stop-loading', this.onStopLoading)
     webview.addEventListener('did-fail-load', this.onFailLoad)
     webview.addEventListener('will-navigate', this.onWillNavigate)
   }
   componentWillUnmount() {
+    const webview = $('webview')
     webview.removeEventListener('did-start-loading', this.onStartLoading)
     webview.removeEventListener('did-stop-loading', this.onStopLoading)
     webview.removeEventListener('did-fail-load', this.onFailLoad)
@@ -44,7 +46,7 @@ class NavigatorBar extends React.Component {
   onStopLoading = () => {
     this.setState({
       status: wvStatus.Loaded,
-      url: webview.getURL(),
+      url: this.webview.getURL(),
     })
   }
   onFailLoad = () => {
@@ -62,7 +64,7 @@ class NavigatorBar extends React.Component {
     if (!(url.startsWith('http://') || url.startsWith('https://'))) {
       url = `http://${this.state.url}`
     }
-    webview.loadURL(url)
+    this.webview.loadURL(url)
     this.setState({
       url: url
     })
@@ -81,10 +83,10 @@ class NavigatorBar extends React.Component {
     this.navigate(this.state.url)
   }
   onClickStop = () => {
-    webview.stop()
+    this.webview.stop()
   }
   onClickRefresh = () => {
-    webview.reload()
+    this.webview.reload()
   }
   onClickHomepage = () => {
     config.set('poi.homepage', this.state.url)
@@ -93,10 +95,10 @@ class NavigatorBar extends React.Component {
     this.navigate(config.get('poi.homepage'))
   }
   onClickGoBack = () => {
-    webview.goBack()
+    this.webview.goBack()
   }
   onClickGoForward = () => {
-    webview.goForward()
+    this.webview.goForward()
   }
 
   render() {
@@ -122,8 +124,8 @@ class NavigatorBar extends React.Component {
 
     let canGoBack, canGoForward
     try {
-      canGoBack = !webview.canGoBack()
-      canGoForward = !webview.canGoForward()
+      canGoBack = !this.webview.canGoBack()
+      canGoForward = !this.webview.canGoForward()
     } catch (error) {
       // do nothing
     }

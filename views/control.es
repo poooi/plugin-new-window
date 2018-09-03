@@ -9,7 +9,6 @@ import { translate } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 const {$, APPDATA_PATH} = window
-const webview = $('inner-page webview')
 
 const DEFAULT_BOOKMARK_PATH = path.resolve(__dirname, '../bookmark.json')
 const CUSTOM_BOOKMARK_PATH = path.join(APPDATA_PATH, 'new-window', 'bookmark.json')
@@ -38,6 +37,7 @@ class ControlBar extends React.Component {
   addPop = React.createRef()
 
   async componentDidMount() {
+    this.webview = $('inner-page webview')
     let defaultBookmarks = []
     let customBookmarks = []
 
@@ -107,8 +107,8 @@ class ControlBar extends React.Component {
     })
   }
   handleSetMuted = () => {
-    if (webview.setAudioMuted){
-      webview.setAudioMuted(!this.state.muted)
+    if (this.webview.setAudioMuted){
+      this.webview.setAudioMuted(!this.state.muted)
     }
     this.setState({
       muted: !this.state.muted,
@@ -148,7 +148,7 @@ class ControlBar extends React.Component {
   handleAddPopShow = () => {
     this.setState({
       addShow: !this.state.addShow,
-      bmadd: webview?.getURL() || '',
+      bmadd: this.webview?.getURL() || '',
     })
   }
   handleDelPopShow = () => {
@@ -157,13 +157,13 @@ class ControlBar extends React.Component {
     })
   }
   onSelectLink = (lnk) => {
-    webview.loadURL(lnk)
+    this.webview.loadURL(lnk)
   }
   handleUnlockWebview = () => {
-    webview.executeJavaScript("document.documentElement.style.overflow = 'auto'")
+    this.webview.executeJavaScript("document.documentElement.style.overflow = 'auto'")
   }
   handleJustify = () => {
-    webview.executeJavaScript(`
+    this.webview.executeJavaScript(`
       var iframe = document.querySelector('#game_frame').contentWindow.document;
       window.scrollTo(0, 0);
       document.documentElement.style.overflow = 'hidden';
@@ -189,7 +189,7 @@ class ControlBar extends React.Component {
     `)
   }
   handleDebug = () => {
-    webview.openDevTools({
+    this.webview.openDevTools({
       detach: true,
     })
   }
@@ -199,7 +199,7 @@ class ControlBar extends React.Component {
     })
   }
   handleSetWebviewRatio = (e) => {
-    webview.executeJavaScript(`window.setZoom(${e.target.value})`)
+    this.webview.executeJavaScript(`window.setZoom(${e.target.value})`)
   }
   render() {
     const { t } = this.props

@@ -9,6 +9,8 @@ import { Button, Modal } from 'react-bootstrap'
 import { remote } from 'electron'
 import I18next from 'i18next'
 import { I18nextProvider, translate, reactI18nextModule } from 'react-i18next'
+import WebView from 'react-electron-web-view'
+
 import BottomBar from './bottom-bar'
 
 const { $ } = window
@@ -74,6 +76,7 @@ class WebArea extends Component {
     t: PropTypes.func.isRequired,
   }
 
+  useragent = remote.getCurrentWebContents().getUserAgent().replace(/Electron[^ ]* /, '').replace(/poi[^ ]* /, '')
   state = { showModal: false }
 
   closeModal = () => this.setState({ showModal: false })
@@ -83,9 +86,7 @@ class WebArea extends Component {
     remote.getCurrentWindow().webContents.on('dom-ready', () => {
       window.dispatchEvent(new Event('resize'))
       remote.getCurrentWindow().reloadArea = 'inner-page webview'
-      const useragent = process.platform == 'darwin' ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-        : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-      $('webview').setUserAgent(useragent)
+      $('webview').setUserAgent(this.useragent, 'ja-JP')
     })
     window.addEventListener('close-plugin', this.openModal)
   }
@@ -96,11 +97,22 @@ class WebArea extends Component {
     const { t } = this.props
     return (
       <>
+        <inner-page>
+          <WebView
+            src="http://www.dmm.com/netgame"
+            plugins
+            disablewebsecurity
+            preload="./webview-preload.js"
+            useragent={this.useragent}
+          />
+        </inner-page>
+        <control-area>
         <form id="nav-area">
           <div className="form-group" id='navigator-bar'>
             <BottomBar />
           </div>
         </form>
+        </control-area>
         <Modal show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>{t("Exit")}</Modal.Title>
@@ -118,4 +130,4 @@ class WebArea extends Component {
   }
 }
 
-ReactDOM.render(<I18nextProvider i18n={i18n}><WebArea /></I18nextProvider>, $('web-area'))
+ReactDOM.render(<I18nextProvider i18n={i18n}><WebArea /></I18nextProvider>, $('app'))
