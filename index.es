@@ -1,3 +1,5 @@
+import os from 'os'
+
 const { config } = window
 export default {
   windowURL: `file://${__dirname}/index.html`,
@@ -7,7 +9,8 @@ export default {
     width: 1100,
     height: 700,
     enableLargerThanScreen: true,
-    titleBarStyle: 'hidden',
+    // FIXME: titlebarStyle: https://github.com/electron/electron/issues/14129
+    titleBarStyle: process.platform === 'darwin' && Number(os.release().split('.')[0]) >= 17 ? 'hidden' : null ,
   },
   realClose: true,
   multiWindow: true,
