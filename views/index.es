@@ -14,7 +14,7 @@ import WebView from 'react-electron-web-view'
 import BottomBar from './bottom-bar'
 
 const { $ } = window
-window.language = config.get('poi.language', navigator.language)
+window.language = config.get('poi.misc.language', navigator.language)
 
 const i18n = I18next.createInstance()
 
