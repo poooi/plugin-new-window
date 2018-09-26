@@ -7,6 +7,7 @@ import { Col, Button, ButtonGroup, InputGroup, FormGroup, FormControl, ControlLa
 import { remote } from 'electron'
 import { translate } from 'react-i18next'
 import PropTypes from 'prop-types'
+import { map, isArray } from 'lodash'
 
 const {$, APPDATA_PATH} = window
 
@@ -43,6 +44,9 @@ class ControlBar extends React.Component {
 
     try {
       defaultBookmarks = await fs.readJson(DEFAULT_BOOKMARK_PATH)
+      if (!isArray(customBookmarks)) {
+        throw new Error('bookmark data invalid')
+      }
     } catch (e) {
       console.error(e)
     }
@@ -52,6 +56,9 @@ class ControlBar extends React.Component {
       await fs.ensureFile(CUSTOM_BOOKMARK_PATH)
 
       customBookmarks = await fs.readJson(CUSTOM_BOOKMARK_PATH)
+      if (!isArray(customBookmarks)) {
+        throw new Error('bookmark data invalid')
+      }
     } catch (e) {
       console.error(e)
     }
