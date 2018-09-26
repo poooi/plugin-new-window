@@ -1,7 +1,7 @@
 {
   "name": "poi-plugin-new-window",
   "version": "3.1.1",
-  "description": "open a new browser window #### Usage Put the folder into /path/to/poi/resources/app/plugins",
+  "description": "open a new browser window",
   "main": "index.es",
   "scripts": {
     "reset": "git clean -f && git checkout . && git submodule foreach git checkout . && git submodule foreach git clean -f",
