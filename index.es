@@ -10,7 +10,8 @@ export default {
     height: 700,
     enableLargerThanScreen: true,
     // FIXME: titlebarStyle: https://github.com/electron/electron/issues/14129
-    titleBarStyle: process.platform === 'darwin' && Number(os.release().split('.')[0]) >= 17 ? 'hidden' : null ,
+    titleBarStyle:
+      process.platform === 'darwin' && Number(os.release().split('.')[0]) >= 17 ? 'hidden' : null,
   },
   realClose: true,
   multiWindow: true,

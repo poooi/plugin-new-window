@@ -19,7 +19,7 @@ class NavigatorBar extends React.Component {
     super()
     this.state = {
       status: 1,
-      url: "http://www.dmm.com/netgame"
+      url: 'http://www.dmm.com/netgame',
     }
   }
   componentDidMount() {
@@ -54,7 +54,7 @@ class NavigatorBar extends React.Component {
       status: wvStatus.Failed,
     })
   }
-  onWillNavigate = (e) => {
+  onWillNavigate = e => {
     this.setState({
       url: e.url,
     })
@@ -66,15 +66,15 @@ class NavigatorBar extends React.Component {
     }
     this.webview.loadURL(url)
     this.setState({
-      url: url
+      url: url,
     })
   }
-  onChangeUrl = (e) => {
+  onChangeUrl = e => {
     this.setState({
-      url: e.target.value
+      url: e.target.value,
     })
   }
-  onKeydown = (e) => {
+  onKeydown = e => {
     if (e.keyCode === 13) {
       this.navigate(this.state.url)
     }
@@ -107,19 +107,27 @@ class NavigatorBar extends React.Component {
 
     let statusIcon
     if (status === wvStatus.Loading) {
-      statusIcon = <div><FontAwesome name='spinner' spin /></div>
+      statusIcon = (
+        <div>
+          <FontAwesome name="spinner" spin />
+        </div>
+      )
     }
     if (status === wvStatus.Failed) {
-      statusIcon = <div><FontAwesome name='times' /></div>
+      statusIcon = (
+        <div>
+          <FontAwesome name="times" />
+        </div>
+      )
     }
 
     let navigateAction, navigateIcon
     if (status === wvStatus.Loading) {
       navigateAction = this.onClickStop
-      navigateIcon   = <FontAwesome name='times' />
+      navigateIcon = <FontAwesome name="times" />
     } else {
       navigateAction = this.onClickNavigate
-      navigateIcon   = <FontAwesome name='arrow-right' />
+      navigateIcon = <FontAwesome name="arrow-right" />
     }
 
     let canGoBack, canGoForward
@@ -131,28 +139,41 @@ class NavigatorBar extends React.Component {
     }
 
     return (
-      <div className='navigator'>
-        <div className='navigator-url'>
+      <div className="navigator">
+        <div className="navigator-url">
           <FormGroup>
-            <InputGroup bsSize='small' style={{width: '100%'}}>
-              <FormControl type='text'
-                 placeholder={t('Input address')}
-                 className={statusIcon? 'navigator-status' : 'navigator-no-status'}
-                 value={this.state.url}
-                 onChange={this.onChangeUrl}
-                 onKeyDown={this.onKeydown} />
-              {statusIcon ? <FormControl.Feedback>
-                              {statusIcon}
-                            </FormControl.Feedback> : null}
+            <InputGroup bsSize="small" style={{ width: '100%' }}>
+              <FormControl
+                type="text"
+                placeholder={t('Input address')}
+                className={statusIcon ? 'navigator-status' : 'navigator-no-status'}
+                value={this.state.url}
+                onChange={this.onChangeUrl}
+                onKeyDown={this.onKeydown}
+              />
+              {statusIcon ? <FormControl.Feedback>{statusIcon}</FormControl.Feedback> : null}
             </InputGroup>
           </FormGroup>
         </div>
-        <div className='navigator-btn'>
+        <div className="navigator-btn">
           <ButtonGroup>
-            <Button bsSize='small' bsStyle='info' disabled={canGoBack} onClick={this.onClickGoBack}><FontAwesome name='chevron-left' /></Button>
-            <Button bsSize='small' bsStyle='info' disabled={canGoForward} onClick={this.onClickGoForward}><FontAwesome name='chevron-right' /></Button>
-            <Button bsSize='small' bsStyle='primary' onClick={navigateAction}>{navigateIcon}</Button>
-            <Button bsSize='small' bsStyle='warning' onClick={this.onClickRefresh}><FontAwesome name='refresh' /></Button>
+            <Button bsSize="small" bsStyle="info" disabled={canGoBack} onClick={this.onClickGoBack}>
+              <FontAwesome name="chevron-left" />
+            </Button>
+            <Button
+              bsSize="small"
+              bsStyle="info"
+              disabled={canGoForward}
+              onClick={this.onClickGoForward}
+            >
+              <FontAwesome name="chevron-right" />
+            </Button>
+            <Button bsSize="small" bsStyle="primary" onClick={navigateAction}>
+              {navigateIcon}
+            </Button>
+            <Button bsSize="small" bsStyle="warning" onClick={this.onClickRefresh}>
+              <FontAwesome name="refresh" />
+            </Button>
           </ButtonGroup>
         </div>
       </div>

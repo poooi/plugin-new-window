@@ -1,9 +1,14 @@
 import React from 'react'
-export default ({text}) => {
-  (
-    <div className="divider">
-      <h5>{text}</h5>
-      <hr />
-    </div>
-  )
+import PropTypes from 'prop-types'
+const Divider = ({ text }) => (
+  <div className="divider">
+    <h5>{text}</h5>
+    <hr />
+  </div>
+)
+
+Divider.propTypes = {
+  text: PropTypes.node,
 }
+
+export default Divider

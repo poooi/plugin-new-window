@@ -1,11 +1,11 @@
 const { remote, webFrame } = require('electron')
-window.onclick = (e) => {
+window.onclick = () => {
   remote.getCurrentWindow().webContents.executeJavaScript(`
     $('webview').blur()
     $('webview').focus()
   `)
 }
-window.setZoom = (zoom) => {
+window.setZoom = zoom => {
   webFrame.setZoomFactor(zoom)
   const zl = webFrame.getZoomLevel()
   webFrame.setLayoutZoomLevelLimits(zl, zl)

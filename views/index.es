@@ -31,25 +31,23 @@ each(i18nFiles, f => {
   }
 })
 
-
 window.i18next = i18n
 
-i18n.use(reactI18nextModule)
-  .init({
-    lng: window.language,
-    fallbackLng: false,
-    resources: pluginResources,
-    ns: ['poi-plugin-new-window'],
-    defaultNS: 'poi-plugin-new-window',
-    interpolation: {
-      escapeValue: false,
-    },
-    returnObjects: true, // allow returning objects
-    react: {
-      wait: false,
-      nsMode: 'fallback',
-    },
-  })
+i18n.use(reactI18nextModule).init({
+  lng: window.language,
+  fallbackLng: false,
+  resources: pluginResources,
+  ns: ['poi-plugin-new-window'],
+  defaultNS: 'poi-plugin-new-window',
+  interpolation: {
+    escapeValue: false,
+  },
+  returnObjects: true, // allow returning objects
+  react: {
+    wait: false,
+    nsMode: 'fallback',
+  },
+})
 
 window.i18n = i18n
 
@@ -76,7 +74,11 @@ class WebArea extends Component {
     t: PropTypes.func.isRequired,
   }
 
-  useragent = remote.getCurrentWebContents().getUserAgent().replace(/Electron[^ ]* /, '').replace(/poi[^ ]* /, '')
+  useragent = remote
+    .getCurrentWebContents()
+    .getUserAgent()
+    .replace(/Electron[^ ]* /, '')
+    .replace(/poi[^ ]* /, '')
   state = { showModal: false }
 
   closeModal = () => this.setState({ showModal: false })
@@ -106,22 +108,22 @@ class WebArea extends Component {
           />
         </inner-page>
         <control-area>
-        <form id="nav-area">
-          <div className="form-group" id='navigator-bar'>
-            <BottomBar />
-          </div>
-        </form>
+          <form id="nav-area">
+            <div className="form-group" id="navigator-bar">
+              <BottomBar />
+            </div>
+          </form>
         </control-area>
         <Modal show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>{t("Exit")}</Modal.Title>
+            <Modal.Title>{t('Exit')}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {t("Confirm?")}
-          </Modal.Body>
+          <Modal.Body>{t('Confirm?')}</Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.closeModal}>{t("Cancel")}</Button>
-            <Button onClick={exitPlugin} bsStyle="warning">{t("Exit")}</Button>
+            <Button onClick={this.closeModal}>{t('Cancel')}</Button>
+            <Button onClick={exitPlugin} bsStyle="warning">
+              {t('Exit')}
+            </Button>
           </Modal.Footer>
         </Modal>
       </>
@@ -129,4 +131,9 @@ class WebArea extends Component {
   }
 }
 
-ReactDOM.render(<I18nextProvider i18n={i18n}><WebArea /></I18nextProvider>, $('app'))
+ReactDOM.render(
+  <I18nextProvider i18n={i18n}>
+    <WebArea />
+  </I18nextProvider>,
+  $('app'),
+)
