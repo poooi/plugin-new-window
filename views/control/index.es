@@ -17,15 +17,15 @@ class ControlBar extends React.Component {
   render() {
     return (
       <div>
-        <ButtonGroup>
+        <ButtonGroup minimal>
           <MuteButton />
           <AutoAdjustButton />
           <ResolutionBuuton />
         </ButtonGroup>
-        <ButtonGroup>
+        <ButtonGroup minimal>
           <BookmarkButton />
         </ButtonGroup>
-        <ButtonGroup>
+        <ButtonGroup minimal>
           <DevToolsButton />
         </ButtonGroup>
       </div>
