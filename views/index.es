@@ -17,6 +17,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import '@skagami/react-fontawesome/inject' // eslint-disable-line import/no-unresolved
 
+import WebviewContext from './webview-context'
 import BottomBar from './bottom-bar'
 
 library.add(fas, far, fab)
@@ -104,6 +105,8 @@ class WebArea extends Component {
     t: PropTypes.func.isRequired,
   }
 
+  webview = React.createRef()
+
   useragent = remote
     .getCurrentWebContents()
     .getUserAgent()
@@ -120,7 +123,7 @@ class WebArea extends Component {
     document.title = this.props.t('Built-in browser')
     remote.getCurrentWindow().webContents.on('dom-ready', () => {
       window.dispatchEvent(new Event('resize'))
-      remote.getCurrentWindow().reloadArea = 'inner-page webview'
+      remote.getCurrentWindow().reloadArea = 'webview'
     })
     window.addEventListener('close-plugin', this.openModal)
   }
@@ -137,31 +140,34 @@ class WebArea extends Component {
         <PageArea>
           <WebView
             src="http://www.dmm.com/netgame"
+            ref={this.webview}
             plugins
             disablewebsecurity
             preload="./webview-preload.js"
             useragent={this.useragent}
           />
         </PageArea>
-        <ControlArea>
-          <form id="nav-area">
-            <div className="form-group" id="navigator-bar">
-              <BottomBar />
-            </div>
-          </form>
-          <Dialog isOpen={this.state.showModal} onClose={this.closeModal}>
-            <div className={Classes.DIALOG_HEADER}>{t('Exit')}</div>
-            <div className={Classes.DIALOG_BODY}>{t('Confirm?')}</div>
-            <div className={Classes.DIALOG_FOOTER}>
-              <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Button onClick={this.closeModal}>{t('Cancel')}</Button>
-                <Button onClick={exitPlugin} intent={Intent.WARNING}>
-                  {t('Exit')}
-                </Button>
+        <WebviewContext.Provider value={this.webview}>
+          <ControlArea>
+            <form id="nav-area">
+              <div className="form-group" id="navigator-bar">
+                <BottomBar />
               </div>
-            </div>
-          </Dialog>
-        </ControlArea>
+            </form>
+            <Dialog isOpen={this.state.showModal} onClose={this.closeModal}>
+              <div className={Classes.DIALOG_HEADER}>{t('Exit')}</div>
+              <div className={Classes.DIALOG_BODY}>{t('Confirm?')}</div>
+              <div className={Classes.DIALOG_FOOTER}>
+                <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                  <Button onClick={this.closeModal}>{t('Cancel')}</Button>
+                  <Button onClick={exitPlugin} intent={Intent.WARNING}>
+                    {t('Exit')}
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </ControlArea>
+        </WebviewContext.Provider>
       </>
     )
   }

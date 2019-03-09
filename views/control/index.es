@@ -24,6 +24,8 @@ import { translate } from 'react-i18next'
 import PropTypes from 'prop-types'
 import { isArray } from 'lodash'
 
+import MuteButton from './mute'
+
 const { $, APPDATA_PATH } = window
 
 const DEFAULT_BOOKMARK_PATH = path.resolve(__dirname, '../bookmark.json')
@@ -228,16 +230,7 @@ class ControlBar extends React.Component {
     return (
       <div className="control-bar">
         <ButtonGroup className="btn-grp">
-          <OverlayTrigger
-            placement="top"
-            overlay={
-              <Tooltip id="btn-mut">{this.state.muted ? t('Volume off') : t('Volume on')}</Tooltip>
-            }
-          >
-            <Button bsSize="small" onClick={this.handleSetMuted}>
-              <FontAwesome name={this.state.muted ? 'volume-off' : 'volume-up'} />
-            </Button>
-          </OverlayTrigger>
+          <MuteButton />
           <OverlayTrigger
             placement="top"
             overlay={<Tooltip id="btn-adj">{t('Auto adjust')}</Tooltip>}
