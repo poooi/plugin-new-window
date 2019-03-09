@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
-import { Button, ButtonGroup, FormControl, InputGroup, FormGroup } from 'react-bootstrap'
+import { Button, ControlGroup, InputGroup, ButtonGroup, Intent } from '@blueprintjs/core'
 import { translate } from 'react-i18next'
+import styled from 'styled-components'
 
 const wvStatus = {
   Loading: 0,
@@ -10,18 +11,41 @@ const wvStatus = {
   Failed: 2,
 }
 
+const Navigator = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+`
+
+const AddressBar = styled.div`
+  flex: 1;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+
+  svg {
+    z-index: 16;
+    top: 30%;
+    left: 10px;
+    position: absolute;
+  }
+`
+
+const Address = styled(ControlGroup)`
+  flex: 1;
+`
+
 @translate('poi-plugin-new-window')
 class NavigatorBar extends React.Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
   }
-  constructor() {
-    super()
-    this.state = {
-      status: 1,
-      url: 'http://www.dmm.com/netgame',
-    }
+
+  state = {
+    status: 1,
+    url: 'http://www.dmm.com/netgame',
   }
+
   componentDidMount() {
     const webview = $('webview')
     this.webview = webview
@@ -30,6 +54,7 @@ class NavigatorBar extends React.Component {
     webview.addEventListener('did-fail-load', this.onFailLoad)
     webview.addEventListener('will-navigate', this.onWillNavigate)
   }
+
   componentWillUnmount() {
     const webview = $('webview')
     webview.removeEventListener('did-start-loading', this.onStartLoading)
@@ -37,28 +62,33 @@ class NavigatorBar extends React.Component {
     webview.removeEventListener('did-fail-load', this.onFailLoad)
     webview.removeEventListener('will-navigate', this.onWillNavigate)
   }
+
   // Webview Event
   onStartLoading = () => {
     this.setState({
       status: wvStatus.Loading,
     })
   }
+
   onStopLoading = () => {
     this.setState({
       status: wvStatus.Loaded,
       url: this.webview.getURL(),
     })
   }
+
   onFailLoad = () => {
     this.setState({
       status: wvStatus.Failed,
     })
   }
+
   onWillNavigate = e => {
     this.setState({
       url: e.url,
     })
   }
+
   // UI Interaction
   navigate(url) {
     if (!(url.startsWith('http://') || url.startsWith('https://'))) {
@@ -69,34 +99,43 @@ class NavigatorBar extends React.Component {
       url: url,
     })
   }
+
   onChangeUrl = e => {
     this.setState({
       url: e.target.value,
     })
   }
+
   onKeydown = e => {
     if (e.keyCode === 13) {
       this.navigate(this.state.url)
     }
   }
+
   onClickNavigate = () => {
     this.navigate(this.state.url)
   }
+
   onClickStop = () => {
     this.webview.stop()
   }
+
   onClickRefresh = () => {
     this.webview.reload()
   }
+
   onClickHomepage = () => {
     config.set('poi.homepage', this.state.url)
   }
+
   onRightClickHomepage = () => {
     this.navigate(config.get('poi.homepage'))
   }
+
   onClickGoBack = () => {
     this.webview.goBack()
   }
+
   onClickGoForward = () => {
     this.webview.goForward()
   }
@@ -139,44 +178,37 @@ class NavigatorBar extends React.Component {
     }
 
     return (
-      <div className="navigator">
-        <div className="navigator-url">
-          <FormGroup>
-            <InputGroup bsSize="small" style={{ width: '100%' }}>
-              <FormControl
-                type="text"
-                placeholder={t('Input address')}
-                className={statusIcon ? 'navigator-status' : 'navigator-no-status'}
-                value={this.state.url}
-                onChange={this.onChangeUrl}
-                onKeyDown={this.onKeydown}
-              />
-              {statusIcon ? <FormControl.Feedback>{statusIcon}</FormControl.Feedback> : null}
-            </InputGroup>
-          </FormGroup>
-        </div>
+      <Navigator>
+        <AddressBar>
+          <Address fill>
+            <InputGroup
+              type="text"
+              placeholder={t('Input address')}
+              className={statusIcon ? 'navigator-status' : 'navigator-no-status'}
+              value={this.state.url}
+              onChange={this.onChangeUrl}
+              onKeyDown={this.onKeydown}
+              leftIcon={statusIcon}
+            />
+          </Address>
+        </AddressBar>
         <div className="navigator-btn">
           <ButtonGroup>
-            <Button bsSize="small" bsStyle="info" disabled={canGoBack} onClick={this.onClickGoBack}>
+            <Button disabled={canGoBack} onClick={this.onClickGoBack}>
               <FontAwesome name="chevron-left" />
             </Button>
-            <Button
-              bsSize="small"
-              bsStyle="info"
-              disabled={canGoForward}
-              onClick={this.onClickGoForward}
-            >
+            <Button disabled={canGoForward} onClick={this.onClickGoForward}>
               <FontAwesome name="chevron-right" />
             </Button>
-            <Button bsSize="small" bsStyle="primary" onClick={navigateAction}>
+            <Button intent={Intent.PRIMARY} onClick={navigateAction}>
               {navigateIcon}
             </Button>
-            <Button bsSize="small" bsStyle="warning" onClick={this.onClickRefresh}>
+            <Button intent={Intent.WARNING} onClick={this.onClickRefresh}>
               <FontAwesome name="refresh" />
             </Button>
           </ButtonGroup>
         </div>
-      </div>
+      </Navigator>
     )
   }
 }
