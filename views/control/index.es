@@ -8,7 +8,6 @@ import {
   Button,
   ButtonGroup,
   InputGroup,
-  FormGroup,
   FormControl,
   ControlLabel,
   OverlayTrigger,
@@ -25,6 +24,8 @@ import PropTypes from 'prop-types'
 import { isArray } from 'lodash'
 
 import MuteButton from './mute'
+import AutoAdjustButton from './auto-adjust'
+import ResolutionBuuton from './resolution'
 
 const { $, APPDATA_PATH } = window
 
@@ -186,32 +187,7 @@ class ControlBar extends React.Component {
   handleUnlockWebview = () => {
     this.webview.executeJavaScript("document.documentElement.style.overflow = 'auto'")
   }
-  handleJustify = () => {
-    this.webview.executeJavaScript(`
-      var iframe = document.querySelector('#game_frame').contentWindow.document;
-      window.scrollTo(0, 0);
-      document.documentElement.style.overflow = 'hidden';
-      var x1 = 0;
-      var y1 = 0;
-      if (iframe.querySelector('embed')!=null) {
-        document.querySelector('#game_frame').style.marginLeft = '0';
-        x1 = iframe.querySelector('embed').getBoundingClientRect().left;
-        y1 = iframe.querySelector('embed').getBoundingClientRect().top;
-      } else if (iframe.querySelector('iframe')!=null) {
-        var iframe1 = iframe.querySelector('iframe').contentWindow.document;
-        iframe.querySelector('iframe').style.marginLeft = '0';
-        iframe1.querySelector('canvas').style.marginLeft = '0';
-        x1 = iframe1.querySelector('canvas').getBoundingClientRect().left;
-        y1 = iframe1.querySelector('canvas').getBoundingClientRect().top;
-      } else if (iframe.querySelector('canvas')!=null) {
-        x1 = iframe.querySelector('canvas').getBoundingClientRect().left;
-        y1 = iframe.querySelector('canvas').getBoundingClientRect().top;
-      }
-      var x = document.querySelector('#game_frame').getBoundingClientRect().left + x1;
-      var y = document.querySelector('#game_frame').getBoundingClientRect().top + y1;
-      window.scrollTo(x, y);
-    `)
-  }
+
   handleDebug = () => {
     this.webview.openDevTools({
       detach: true,
@@ -231,131 +207,8 @@ class ControlBar extends React.Component {
       <div className="control-bar">
         <ButtonGroup className="btn-grp">
           <MuteButton />
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip id="btn-adj">{t('Auto adjust')}</Tooltip>}
-          >
-            <Button
-              bsSize="small"
-              onClick={this.handleJustify}
-              onContextMenu={this.handleUnlockWebview}
-            >
-              <FontAwesome name="arrows-alt" />
-            </Button>
-          </OverlayTrigger>
-          <Overlay
-            show={this.state.resShow}
-            onHide={this.handleResPopShow}
-            rootClose={true}
-            target={() => ReactDOM.findDOMNode(this.resPop.current)}
-            placement="top"
-          >
-            <Popover id="pop-res" title={t('Change resolution')}>
-              <FormGroup>
-                <Row>
-                  <Col xs={4}>
-                    <InputGroup bsSize="small">
-                      <FormControl
-                        type="text"
-                        value={this.state.width}
-                        onChange={this.handleSetWidth}
-                      />
-                    </InputGroup>
-                  </Col>
-                  <Col xs={4}>
-                    <InputGroup bsSize="small">
-                      <FormControl
-                        type="text"
-                        value={this.state.height}
-                        onChange={this.handleSetHeight}
-                      />
-                    </InputGroup>
-                  </Col>
-                  <Col xs={4}>
-                    <Button
-                      bsSize="small"
-                      style={{ width: '100%' }}
-                      onClick={this.handleSetRes.bind(
-                        this,
-                        parseInt(this.state.width),
-                        parseInt(this.state.height),
-                      )}
-                    >
-                      <FontAwesome name="check" />
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ width: '100%' }}>
-                  <Col xs={3}>
-                    <Button
-                      bsSize="small"
-                      className="res-btn"
-                      onClick={this.handleSetRes.bind(this, 800, 480)}
-                    >
-                      800*480
-                    </Button>
-                  </Col>
-                  <Col xs={3}>
-                    <Button
-                      bsSize="small"
-                      className="res-btn"
-                      onClick={this.handleSetRes.bind(this, 960, 580)}
-                    >
-                      960*580
-                    </Button>
-                  </Col>
-                  <Col xs={3}>
-                    <Button
-                      bsSize="small"
-                      className="res-btn"
-                      onClick={this.handleSetRes.bind(this, 960, 640)}
-                    >
-                      960*640
-                    </Button>
-                  </Col>
-                  <Col xs={3}>
-                    <Button
-                      bsSize="small"
-                      className="res-btn"
-                      onClick={this.handleSetRes.bind(this, 1280, 720)}
-                    >
-                      1280*720
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} style={{ paddingTop: 5, marginBottom: -15 }}>
-                    <FormControl
-                      componentClass="select"
-                      onChange={this.handleSetWebviewRatio}
-                      defaultValue={1}
-                    >
-                      {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
-                        <option key={i} value={i * 0.25 + 0.25}>
-                          {i * 25 + 25}%
-                        </option>
-                      ))}
-                    </FormControl>
-                  </Col>
-                </Row>
-              </FormGroup>
-            </Popover>
-          </Overlay>
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip id="btn-res">{t('Change resolution')}</Tooltip>}
-          >
-            <Button
-              id="res-btn"
-              bsStyle="default"
-              bsSize="small"
-              ref={this.resPop}
-              style={{ marginLeft: 0 }}
-              onClick={this.handleResPopShow}
-            >
-              <FontAwesome name="arrows" />
-            </Button>
-          </OverlayTrigger>
+          <AutoAdjustButton />
+          <ResolutionBuuton />
         </ButtonGroup>
         <OverlayTrigger
           placement="top"
