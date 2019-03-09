@@ -53,7 +53,7 @@ class ControlBar extends React.Component {
   addPop = React.createRef()
 
   async componentDidMount() {
-    this.webview = $('inner-page webview')
+    this.webview = $('webview')
     let defaultBookmarks = []
     let customBookmarks = []
 
