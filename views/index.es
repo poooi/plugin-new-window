@@ -11,6 +11,7 @@ import I18next from 'i18next'
 import { I18nextProvider, translate, reactI18nextModule } from 'react-i18next'
 import WebView from 'react-electron-web-view'
 import styled, { createGlobalStyle } from 'styled-components'
+import formatJson from 'json-format'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -55,6 +56,33 @@ i18n.use(reactI18nextModule).init({
   react: {
     wait: false,
     nsMode: 'fallback',
+  },
+  saveMissing: false,
+  missingKeyHandler: (lng, ns, key, fallbackValue) => {
+    if (!ns || ns == '') {
+      ns = 'others'
+    }
+    if (ns === 'poi-plugin-new-window') {
+      try {
+        const p = path.resolve(__dirname, `../i18n/${lng}.json`)
+        const cnt = fs.readJSONSync(p)
+        let val = fallbackValue
+        if (val.startsWith(ns)) {
+          val = val.split(/:(.+)/)[1]
+        }
+        cnt[key] = val
+        fs.writeFileSync(
+          p,
+          formatJson(cnt, {
+            type: 'space',
+            size: 2,
+          }) + '\n',
+        )
+      } catch (e) {
+        console.error(e)
+        return
+      }
+    }
   },
 })
 

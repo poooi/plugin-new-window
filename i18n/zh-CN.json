@@ -8,12 +8,19 @@
   "Confirm?": "确定退出？",
   "Open a new browser window": "打开新窗口以游玩其他游戏",
   "Built-in browser": "一心二用",
-  "Confirm?": "确定退出？",
   "Exit": "退出",
   "Cancel": "取消",
   "Add bookmark": "添加书签",
   "Del bookmark": "删除书签",
   "Confirm": "确定",
   "Name": "书签名",
-  "Address": "地址"
+  "Address": "地址",
+  "Input address": "输入地址",
+  "Bookmarks": "书签",
+  "URL": "URL",
+  "The name already exists.": "名字已经存在。",
+  "Size": "尺寸",
+  "Presets": "预设",
+  "Apply": "应用更改",
+  "Zoom": "缩放"
 }
