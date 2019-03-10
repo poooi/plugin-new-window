@@ -192,7 +192,7 @@ class NavigatorBar extends React.Component {
             />
           </Address>
         </AddressBar>
-        <div className="navigator-btn">
+        <div>
           <ButtonGroup minimal>
             <Button disabled={canGoBack} onClick={this.onClickGoBack}>
               <FontAwesome name="chevron-left" />

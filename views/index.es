@@ -76,6 +76,13 @@ window.onbeforeunload = () => {
 }
 
 const GlobalStyle = createGlobalStyle`
+  body {
+    overflow: hidden;
+    zoom: 1 !important;
+    margin: 0;
+    padding: 0;
+  }
+
   #app {
     display: flex;
     flex-direction: column;
@@ -149,11 +156,7 @@ class WebArea extends Component {
         </PageArea>
         <WebviewContext.Provider value={this.webview}>
           <ControlArea>
-            <form id="nav-area">
-              <div className="form-group" id="navigator-bar">
-                <BottomBar />
-              </div>
-            </form>
+            <BottomBar />
             <Dialog isOpen={this.state.showModal} onClose={this.closeModal}>
               <div className={Classes.DIALOG_HEADER}>{t('Exit')}</div>
               <div className={Classes.DIALOG_BODY}>{t('Confirm?')}</div>
