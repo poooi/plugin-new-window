@@ -8,12 +8,19 @@
   "Confirm?": "確定離開？",
   "Open a new browser window": "打開新視窗以遊玩其他遊戲",
   "Built-in browser": "一心二用",
-  "Confirm?": "確定離開？",
   "Exit": "退出",
   "Cancel": "取消",
   "Add bookmark": "添加書籤",
   "Del bookmark": "刪除書籤",
   "Confirm": "確定",
   "Name": "書籤名",
-  "Address": "地址"
+  "Address": "地址",
+  "Input address": "輸入地址",
+  "Bookmarks": "書籤",
+  "URL": "URL",
+  "The name already exists.": "名字已經存在。",
+  "Size": "尺寸",
+  "Presets": "預設",
+  "Apply": "應用更改",
+  "Zoom": "縮放"
 }
