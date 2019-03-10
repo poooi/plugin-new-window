@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import NavigatorBar from './navigator-bar'
 import ControlBar from './control'
+import ErrorBoundary from './error-boundary'
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,8 +18,10 @@ const Wrapper = styled.div`
 
 const BottomBar = () => (
   <Wrapper>
-    <NavigatorBar />
-    <ControlBar />
+    <ErrorBoundary>
+      <NavigatorBar />
+      <ControlBar />
+    </ErrorBoundary>
   </Wrapper>
 )
 

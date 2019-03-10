@@ -20,6 +20,7 @@ import fs from 'fs-extra'
 import path from 'path'
 
 import WebviewContext from '../webview-context'
+import ErrorBoundary from '../error-boundary'
 
 const DEFAULT_BOOKMARK_PATH = path.resolve(__dirname, '../../bookmark.json')
 const CUSTOM_BOOKMARK_PATH = path.join(window.APPDATA_PATH, 'new-window', 'bookmark.json')
@@ -122,57 +123,59 @@ const BookmarkCard = translate('poi-plugin-new-window')(({ t }) => {
   }, [webview])
 
   return (
-    <Container>
-      <div>
-        {map(defaultBookmarks, ({ name, link }) => (
-          <BookmarkItem
-            onSelect={() => webview.current.loadURL?.(link)}
-            name={name}
-            link={link}
-            key={name}
-            disabled
-          />
-        ))}
-        <hr />
-        {!!bookmarks.length &&
-          map(bookmarks, ({ name, link }, i) => (
+    <ErrorBoundary>
+      <Container>
+        <div>
+          {map(defaultBookmarks, ({ name, link }) => (
             <BookmarkItem
               onSelect={() => webview.current.loadURL?.(link)}
               name={name}
               link={link}
               key={name}
-              onRemove={() => handleRemove(i)}
+              disabled
             />
           ))}
-      </div>
-      <Creator>
-        <FormGroup label={t('Name')} helperText={isExist && t('The name already exists.')}>
-          <ControlGroup fill>
-            <InputGroup value={bookmarkName} onChange={e => setBookmarkName(e.target.value)} />
-            <Button onClick={getTitle} className={Classes.FIXED}>
-              <FontAwesome name="refresh" />
-            </Button>
-          </ControlGroup>
-        </FormGroup>
-        <FormGroup label={t('URL')}>
-          <ControlGroup fill>
-            <InputGroup value={bookmarkLink} onChange={e => setBookmarkLink(e.target.value)} />
-            <Button onClick={getLink} className={Classes.FIXED}>
-              <FontAwesome name="refresh" />
-            </Button>
-          </ControlGroup>
-        </FormGroup>
-        <Button
-          disabled={!bookmarkName || !bookmarkLink || isExist}
-          intent={Intent.PRIMARY}
-          onClick={() => {
-            setBookmarks([...bookmarks, { name: bookmarkName, link: bookmarkLink }])
-          }}
-        >
-          {t('Confirm')}
-        </Button>
-      </Creator>
-    </Container>
+          <hr />
+          {!!bookmarks.length &&
+            map(bookmarks, ({ name, link }, i) => (
+              <BookmarkItem
+                onSelect={() => webview.current.loadURL?.(link)}
+                name={name}
+                link={link}
+                key={name}
+                onRemove={() => handleRemove(i)}
+              />
+            ))}
+        </div>
+        <Creator>
+          <FormGroup label={t('Name')} helperText={isExist && t('The name already exists.')}>
+            <ControlGroup fill>
+              <InputGroup value={bookmarkName} onChange={e => setBookmarkName(e.target.value)} />
+              <Button onClick={getTitle} className={Classes.FIXED}>
+                <FontAwesome name="refresh" />
+              </Button>
+            </ControlGroup>
+          </FormGroup>
+          <FormGroup label={t('URL')}>
+            <ControlGroup fill>
+              <InputGroup value={bookmarkLink} onChange={e => setBookmarkLink(e.target.value)} />
+              <Button onClick={getLink} className={Classes.FIXED}>
+                <FontAwesome name="refresh" />
+              </Button>
+            </ControlGroup>
+          </FormGroup>
+          <Button
+            disabled={!bookmarkName || !bookmarkLink || isExist}
+            intent={Intent.PRIMARY}
+            onClick={() => {
+              setBookmarks([...bookmarks, { name: bookmarkName, link: bookmarkLink }])
+            }}
+          >
+            {t('Confirm')}
+          </Button>
+        </Creator>
+      </Container>
+    </ErrorBoundary>
   )
 })
 
