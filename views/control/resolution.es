@@ -51,7 +51,7 @@ const Icon = styled.span`
   text-align: center;
 `
 
-const ResolutionButton = translate('poi-plugin-new-window')(({ t }) => {
+const ResolutionCard = translate('poi-plugin-new-window')(({ t }) => {
   const webview = useContext(WebviewContext)
 
   const [width, setWidth] = useState(window.innerWidth)
@@ -81,49 +81,53 @@ const ResolutionButton = translate('poi-plugin-new-window')(({ t }) => {
   )
 
   return (
-    <Popover hasBackdrop position={Position.TOP}>
-      <Tooltip position={Position.TOP} content={t('Change resolution')}>
-        <Button>
-          <FontAwesome name="arrows" />
-        </Button>
-      </Tooltip>
-      <Card>
-        <FormGroup label={t('Size')}>
-          <Control>
-            <HTMLSelect value="unselected" onChange={handleShortcut}>
-              <option value="unselectd">{t('Presets')}</option>
-              {map(RESOLUTIONS, ([w, h], name) => (
-                <option value={name} key={name}>
-                  {w} × {h}
-                </option>
-              ))}
-            </HTMLSelect>
-            <Icon />
-            <Icon>
-              <FontAwesome name="arrows-alt-h" />
-            </Icon>
-            <NumericInput value={width} onChange={value => setWidth(value)} />
-            <Icon>
-              <FontAwesome name="arrows-alt-v" />
-            </Icon>
-            <NumericInput value={height} onChange={value => setHeight(value)} />
-            <Button intent={Intent.PRIMARY} onClick={handleApply}>
-              {t('Apply')}
-            </Button>
-          </Control>
-        </FormGroup>
-        <FormGroup label={t('Zoom')}>
-          <HTMLSelect onChange={handleZoom} value={zoom}>
-            {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
-              <option key={i} value={i * 0.25 + 0.25}>
-                {i * 25 + 25}%
+    <Card>
+      <FormGroup label={t('Size')}>
+        <Control>
+          <HTMLSelect value="unselected" onChange={handleShortcut}>
+            <option value="unselectd">{t('Presets')}</option>
+            {map(RESOLUTIONS, ([w, h], name) => (
+              <option value={name} key={name}>
+                {w} × {h}
               </option>
             ))}
           </HTMLSelect>
-        </FormGroup>
-      </Card>
-    </Popover>
+          <Icon />
+          <Icon>
+            <FontAwesome name="arrows-alt-h" />
+          </Icon>
+          <NumericInput value={width} onChange={value => setWidth(value)} />
+          <Icon>
+            <FontAwesome name="arrows-alt-v" />
+          </Icon>
+          <NumericInput value={height} onChange={value => setHeight(value)} />
+          <Button intent={Intent.PRIMARY} onClick={handleApply}>
+            {t('Apply')}
+          </Button>
+        </Control>
+      </FormGroup>
+      <FormGroup label={t('Zoom')}>
+        <HTMLSelect onChange={handleZoom} value={zoom}>
+          {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+            <option key={i} value={i * 0.25 + 0.25}>
+              {i * 25 + 25}%
+            </option>
+          ))}
+        </HTMLSelect>
+      </FormGroup>
+    </Card>
   )
 })
+
+const ResolutionButton = translate('poi-plugin-new-window')(({ t }) => (
+  <Popover hasBackdrop position={Position.TOP}>
+    <Tooltip position={Position.TOP} content={t('Change resolution')}>
+      <Button>
+        <FontAwesome name="arrows" />
+      </Button>
+    </Tooltip>
+    <ResolutionCard />
+  </Popover>
+))
 
 export default ResolutionButton

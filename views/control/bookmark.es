@@ -78,12 +78,13 @@ const BookmarkItem = ({ name, link, onSelect, onRemove, disabled }) => { // esli
   )
 }
 
-const BookmarkButton = translate('poi-plugin-new-window')(({ t }) => {
+const BookmarkCard = translate('poi-plugin-new-window')(({ t }) => {
   const webview = useContext(WebviewContext)
 
   const [bookmarks, setBookmarks] = useState([])
-  const [bookmarkLink, setBookmarkLink] = useState('')
-  const [bookmarkName, setBookmarkName] = useState('')
+
+  const [bookmarkLink, setBookmarkLink] = useState(webview?.current?.getURL() || '')
+  const [bookmarkName, setBookmarkName] = useState(webview?.current?.getTitle() || '')
 
   const isExist = find(bookmarks, ({ name }) => name === bookmarkName)
 
@@ -121,65 +122,69 @@ const BookmarkButton = translate('poi-plugin-new-window')(({ t }) => {
   }, [webview])
 
   return (
-    <Popover hasBackdrop position={Position.TOP}>
-      <Tooltip position={Position.TOP} content={t('Bookmarks')}>
-        <Button>
-          <FontAwesome name="bookmark-o" />
-        </Button>
-      </Tooltip>
-      <Container>
-        <div>
-          {map(defaultBookmarks, ({ name, link }) => (
+    <Container>
+      <div>
+        {map(defaultBookmarks, ({ name, link }) => (
+          <BookmarkItem
+            onSelect={() => webview.current.loadURL?.(link)}
+            name={name}
+            link={link}
+            key={name}
+            disabled
+          />
+        ))}
+        <hr />
+        {!!bookmarks.length &&
+          map(bookmarks, ({ name, link }, i) => (
             <BookmarkItem
               onSelect={() => webview.current.loadURL?.(link)}
               name={name}
               link={link}
               key={name}
-              disabled
+              onRemove={() => handleRemove(i)}
             />
           ))}
-          <hr />
-          {!!bookmarks.length &&
-            map(bookmarks, ({ name, link }, i) => (
-              <BookmarkItem
-                onSelect={() => webview.current.loadURL?.(link)}
-                name={name}
-                link={link}
-                key={name}
-                onRemove={() => handleRemove(i)}
-              />
-            ))}
-        </div>
-        <Creator>
-          <FormGroup label={t('Name')}>
-            <ControlGroup fill>
-              <InputGroup value={bookmarkName} onChange={e => setBookmarkName(e.target.value)} />
-              <Button onClick={getTitle} className={Classes.FIXED}>
-                <FontAwesome name="refresh" />
-              </Button>
-            </ControlGroup>
-          </FormGroup>
-          <FormGroup label={t('URL')}>
-            <ControlGroup fill>
-              <InputGroup value={bookmarkLink} onChange={e => setBookmarkLink(e.target.value)} />
-              <Button onClick={getLink} className={Classes.FIXED}>
-                <FontAwesome name="refresh" />
-              </Button>
-            </ControlGroup>
-          </FormGroup>
-          <Button
-            disabled={!bookmarkName || !bookmarkLink || isExist}
-            intent={Intent.PRIMARY}
-            onClick={() => {
-              setBookmarks([...bookmarks, { name: bookmarkName, link: bookmarkLink }])
-            }}
-          >
-            {t('Confirm')}
-          </Button>
-        </Creator>
-      </Container>
-    </Popover>
+      </div>
+      <Creator>
+        <FormGroup label={t('Name')} helperText={isExist && t('The name already exists.')}>
+          <ControlGroup fill>
+            <InputGroup value={bookmarkName} onChange={e => setBookmarkName(e.target.value)} />
+            <Button onClick={getTitle} className={Classes.FIXED}>
+              <FontAwesome name="refresh" />
+            </Button>
+          </ControlGroup>
+        </FormGroup>
+        <FormGroup label={t('URL')}>
+          <ControlGroup fill>
+            <InputGroup value={bookmarkLink} onChange={e => setBookmarkLink(e.target.value)} />
+            <Button onClick={getLink} className={Classes.FIXED}>
+              <FontAwesome name="refresh" />
+            </Button>
+          </ControlGroup>
+        </FormGroup>
+        <Button
+          disabled={!bookmarkName || !bookmarkLink || isExist}
+          intent={Intent.PRIMARY}
+          onClick={() => {
+            setBookmarks([...bookmarks, { name: bookmarkName, link: bookmarkLink }])
+          }}
+        >
+          {t('Confirm')}
+        </Button>
+      </Creator>
+    </Container>
   )
 })
+
+const BookmarkButton = translate('poi-plugin-new-window')(({ t }) => (
+  <Popover hasBackdrop position={Position.TOP}>
+    <Tooltip position={Position.TOP} content={t('Bookmarks')}>
+      <Button>
+        <FontAwesome name="bookmark-o" />
+      </Button>
+    </Tooltip>
+    <BookmarkCard />
+  </Popover>
+))
 
 export default BookmarkButton
