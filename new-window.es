@@ -10,6 +10,12 @@ const config = (window.config = remote.require('./lib/config'))
 
 require(`${window.ROOT}/views/env-parts/theme`)
 
+try {
+  require(`${window.ROOT}/views/polyfills/react-i18next`)
+} catch (e) {
+  // do nothing
+}
+
 require('./views')
 
 const WindowManager = remote.require('./lib/window')
