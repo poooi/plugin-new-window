@@ -148,7 +148,7 @@ const BookmarkCard = translate('poi-plugin-new-window')(({ t }) => {
             ))}
         </div>
         <Creator>
-          <FormGroup label={t('Name')} helperText={isExist && t('The name already exists.')}>
+          <FormGroup label={t('Name')} helperText={isExist && t('name_exists')}>
             <ControlGroup fill>
               <InputGroup value={bookmarkName} onChange={e => setBookmarkName(e.target.value)} />
               <Button onClick={getTitle} className={Classes.FIXED}>

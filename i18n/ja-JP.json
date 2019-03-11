@@ -18,7 +18,7 @@
   "Input address": "入力アドレス",
   "Bookmarks": "ブックマーク",
   "URL": "URL",
-  "The name already exists.": "名前は既に存在します。",
+  "name_exists": "名前は既に存在します。",
   "Size": "大小",
   "Presets": "プリセット",
   "Apply": "適用",

@@ -18,7 +18,7 @@
   "Input address": "輸入地址",
   "Bookmarks": "書籤",
   "URL": "URL",
-  "The name already exists.": "名字已經存在。",
+  "name_exists": "名字已經存在。",
   "Size": "尺寸",
   "Presets": "預設",
   "Apply": "應用更改",
