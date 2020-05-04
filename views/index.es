@@ -17,7 +17,6 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import '@skagami/react-fontawesome/inject' // eslint-disable-line import/no-unresolved
 
-import WebView from 'views/components/etc/webview'
 import WebviewContext from './webview-context'
 import BottomBar from './bottom-bar'
 
@@ -173,7 +172,7 @@ class WebArea extends Component {
       <>
         <GlobalStyle />
         <PageArea>
-          <WebView
+          <webview
             src="http://www.dmm.com/netgame"
             ref={this.webview}
             plugins
