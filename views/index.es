@@ -9,7 +9,6 @@ import { Button, Dialog, Classes, Intent } from '@blueprintjs/core'
 import { remote } from 'electron'
 import I18next from 'i18next'
 import { I18nextProvider, translate, reactI18nextModule } from 'react-i18next'
-import WebView from 'react-electron-web-view'
 import styled, { createGlobalStyle } from 'styled-components'
 import formatJson from 'json-format'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -18,6 +17,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import '@skagami/react-fontawesome/inject' // eslint-disable-line import/no-unresolved
 
+import WebView from 'views/components/etc/webview'
 import WebviewContext from './webview-context'
 import BottomBar from './bottom-bar'
 
