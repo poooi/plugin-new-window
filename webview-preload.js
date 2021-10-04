@@ -1,4 +1,6 @@
-const { remote, webFrame } = require('electron')
+const { webFrame } = require('electron')
+const remote = require('electron').remote || require('@electron/remote')
+
 window.onclick = () => {
   remote.getCurrentWindow().webContents.executeJavaScript(`
     $('webview').blur()

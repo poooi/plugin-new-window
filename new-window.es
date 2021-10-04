@@ -1,4 +1,7 @@
 const remote = require('electron').remote || require('@electron/remote')
+if (!require('electron').remote) {
+  require('electron').remote = remote
+}
 
 window.$ = param => document.querySelector(param)
 window.$$ = param => document.querySelectorAll(param)
