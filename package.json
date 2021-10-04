@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-new-window",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "open a new browser window",
   "main": "index.es",
   "scripts": {
