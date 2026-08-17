@@ -1,16 +1,23 @@
+import type { ReactNode } from 'react'
+
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
-class ErrorBoundary extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
+interface Props {
+  children: ReactNode
+}
 
-  state = {
+interface State {
+  hasError: boolean
+}
+
+// React has no hook equivalent of componentDidCatch, so this one stays a class.
+class ErrorBoundary extends Component<Props, State> {
+  state: State = {
     hasError: false,
   }
 
-  componentDidCatch() {
+  componentDidCatch(error: Error) {
+    console.error(error)
     this.setState({
       hasError: true,
     })
