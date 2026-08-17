@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import FontAwesome from 'react-fontawesome'
 import { useTranslation } from 'react-i18next'
 
-import remote from '../../lib/remote'
+import { remote } from '../../lib/remote'
 import { useWebviewRef } from '../webview-context'
 
 const DevToolsButton: React.FC = () => {

@@ -16,7 +16,7 @@ import FontAwesome from 'react-fontawesome'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import remote from '../../lib/remote'
+import { remote } from '../../lib/remote'
 import ErrorBoundary from '../error-boundary'
 import { useWebviewRef } from '../webview-context'
 

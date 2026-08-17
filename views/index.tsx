@@ -13,7 +13,7 @@ import { I18nextProvider, useTranslation } from 'react-i18next'
 import styled, { createGlobalStyle } from 'styled-components'
 import { pathToFileURL } from 'url'
 
-import remote from '../lib/remote'
+import { remote } from '../lib/remote'
 import BottomBar from './bottom-bar'
 import i18n from './i18n'
 import WebviewContext from './webview-context'

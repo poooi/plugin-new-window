@@ -2,7 +2,7 @@ import type { WebviewTag } from 'electron'
 
 import Module from 'module'
 
-import remote from './lib/remote'
+import { remote } from './lib/remote'
 
 const DMM_COOKIE_SCRIPT = `
   document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/";
